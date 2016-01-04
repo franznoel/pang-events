@@ -1,4 +1,8 @@
-$(document).foundation();
+/*
+App Name: pang-events
+Author: Franz Noel Tanglao 
+*/
+
 
 // Authentication
 function logout() {
@@ -26,3 +30,20 @@ function getParameterByName(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+$(document).foundation();
+
+window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '107849732925710',
+    xfbml      : true,
+    version    : 'v2.5'
+  });
+};
+
+(function(d, s, id){
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/en_US/sdk.js";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));

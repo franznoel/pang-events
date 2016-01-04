@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>pangEvents</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="bower_components/foundation-sites/dist/foundation.min.css" />
         <link rel="stylesheet" type="text/css" href="bower_components/foundation-icon-fonts/foundation-icons.css" />
         <link rel="stylesheet" type="text/css" href="style.css" />
@@ -12,7 +12,6 @@
       <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
       <script type="text/javascript" src="bower_components/foundation-sites/dist/foundation.min.js"></script>
       <script type="text/javascript" src="script.js"></script>
-
       <header>
         <div id="menu" class="top-bar">
           <div class="top-bar-left">
@@ -22,62 +21,44 @@
           </div>
           <div class="top-bar-right">
             <ul class="menu">
-              <li class="credentials"><a href="/sign-in.html" class="button">Sign In</a></li>
+              <li class="credentials"><a href="/sign-in.html" class="button sign-in">Sign In</a></li>
             </ul>
           </div>
         </div>
       </header>
 
-      <div
-        class="fb-like"
-        data-share="true"
-        data-width="450"
-        data-show-faces="true">
-      </div>
-
       <div id="content" class="row">
-
         <div class="large-12 columns">
           <div id="event-add" class="large-12 columns">
             <div class="row">
               <div class="small-12 large-12 columns">
-                <h2>New Year's Celebration</h2>
+                <h2>Sign Up</h2>
                 <hr/>
               </div>
             </div>
 
-            <div id="event-info">
+            <form id="event-add-form" method="post" action="">
               <div class="row">
-                <div class="small-12 large-4 columns">
-                  <label for="eventHost">Host</label>
-                  <p>John Smith</p>
-                  <label for="eventType">Event Type</label>
-                  <p>Party</p>
-                  <label for="eventStartTime">Event Start</label>
-                  <p>January 2, 2016 12:30 PM</p>
-                  <label for="eventEndTime">Event End</label>
-                  <p>January 2, 2016 12:30 PM</p>
-                  <label for="eventAddress">
-                    <p>1234 Main St,<br/> 
-                      Los Angeles, CA 90034</p>
+                <div class="small-12 large-6 columns">
+                  <label for="signupEmail">Email Address
+                    <input type="text" name="emailAddress" value="" placeholder="Email Address" />
+                  </label>
+                  <label for="signupPassword">Password
+                    <input type="text" name="signupPassword" value="" placeholder="Confirm Password" />
+                  </label>
+                  <label for="signupConfirmPassword">Confirm Password
+                    <input type="text" name="signupConfirmPassword" value="" placeholder="Confirm Password" />
                   </label>
                 </div>
-
-                <div class="small-12 large-8 columns end">
-                  <fieldset class="fieldset">
-                    <h4>Guest List</h4>
-                    <label for="guestEmail">Guest's Email</label>
-                    <input type="text" name="guestEmail" value="" placeholder="Guest's Email" />
-                    <input type="submit" name="submit" class="button" value="Add Guest">
-                    <ul class="guest-list">
-                      <li>johnsmith@gmail.com</li>
-                      <li>janesmith@gmail.com</li>
-                    </ul>
-                  </fieldset>
-                </div>                
+                <div class="small-12 large-6 columns">
+                  <label for="signupBio">Biography
+                    <textarea name="signupBio" rows="4" placeholder="About me"></textarea>
+                  </label>
+                </div>
               </div>
-              <a href="/event-add.html" class="button secondary">Back</a>
-            </div>
+              <input type="submit" name="submit" class="button" value="Sign Up">
+              <a href="/" class="button secondary">Cancel</a>
+            </form>
           </div>
         </div>
         <!-- #event-category -->

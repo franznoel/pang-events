@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>pangEvents</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="bower_components/foundation-sites/dist/foundation.min.css" />
         <link rel="stylesheet" type="text/css" href="bower_components/foundation-icon-fonts/foundation-icons.css" />
         <link rel="stylesheet" type="text/css" href="style.css" />
@@ -34,7 +35,7 @@
               <div id="login-error">
               </div>
               <form id="login-form" method="post">
-                <label for="username">Username
+                <label for="username">Email Address
                   <input type="text" id="login-username" class="form-control" name="username" value="" placeholder="Username" autocomplete="username"/>
                 </label>
                 <label for="username">Password
@@ -43,18 +44,17 @@
                 <input type="submit" name="submit" class="button primary" value="Submit" />
                 <a href="/forgot-password.html" class="button secondary">Forgot Password</a>
                 <hr/>
-                <h5>Login with:</h5>
+                <h5>Signup or Login with:</h5>
                 <div class="login-buttons row">
                   <div class="large-6 large-6 columns">
-                    <a href="#" class="button facebook button-login expanded"><i class="fi-social-facebook"></i> Facebook</a>
+                    <a href="/sign-up.html" class="button button-login expanded primary">Sign Up</a>
                   </div>
                   <div class="large-6 large-6 columns">
+                    <a href="#" class="button facebook button-login expanded"><i class="fi-social-facebook"></i> Facebook</a>
                     <a class="button google button-login alert expanded" href="https://accounts.google.com/o/oauth2/v2/auth?client_id=1015279124716-ittf61nieb7tb1baiflnat5l04v1nv95.apps.googleusercontent.com&redirect_uri=http://localhost:3000/&response_type=code&scope=openid%20email&login_hint=address
 "><i class="fi-social-google-plus"></i> Google</a>
                   </div>
-                </li>
-                </ul>
-
+                </div>
               </form>
             </div>
           </div>
