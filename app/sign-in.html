@@ -94,10 +94,10 @@
             } else {
               var successMessage = '<div class="callout success">Authenticated successfully with payload!</div>';
               $("#login-error").html(successMessage);
-              // Add save cookie here.
-              var referrer = (document.referrer!=null) ? document.referrer : "/event-list.html";
+              // Add save cookie here to check if logged in
+              var referrer = (document.referrer!=null) ? document.referrer : "/";
               window.location.replace(referrer);
-              // console.log(document.referrer);
+              console.log(document.referrer);
             }
           });
         });
@@ -126,7 +126,6 @@
             }
           },options);
         });
-
       </script>
 
     </body>

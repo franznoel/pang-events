@@ -109,7 +109,7 @@
         var html = "";
         if (errorList.length<=0) {
           html+= "<div class='error success errorContainer callout'>";
-          html+= "<h5><i class='fi-checkbox'></i> Success!</h5>";
+          html+= "<h5><i class='fi-checkbox'></i> Cool!</h5>";
           html+= "<p>No errors found. Try submitting the form.</p>"
           html+= "</div>";
          } else {
@@ -222,7 +222,7 @@
               }
             });
             html+="<div class='error callout success errorContainer'>";
-            html+="<h5><i class='fi-alert'></i> Oops!</h5>";
+            html+="<h5><i class='fi-alert'></i> Success!</h5>";
             html+="<p>Successfully created user account with uid: " + userData.uid + "</p>";
             html+="</div>";
             $("#errorMessage").html(html);
