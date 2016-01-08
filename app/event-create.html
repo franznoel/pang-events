@@ -8,10 +8,6 @@
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
-      <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-      <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
-      <script type="text/javascript" src="bower_components/foundation-sites/dist/foundation.min.js"></script>
-      <script type="text/javascript" src="script.js"></script>
       <header>
         <div id="menu" class="top-bar">
           <div class="top-bar-left">
@@ -20,9 +16,18 @@
             </ul>
           </div>
           <div class="top-bar-right">
-            <ul class="menu">
-              <li class="credentials"><a href="/sign-up.html" class="button sign-up">Sign Up</a></li>
-              <li class="credentials"><a href="/sign-in.html" class="button sign-in">Sign In</a></li>
+            <ul id="loggedIn-menu" class="dropdown menu right-menu" data-dropdown-menu>
+            <li class="has-submenu">
+              <a href="#" class="button" id="displayedUser"></a>
+              <ul class="submenu menu vertical displayedUser-dropdown" data-submenu>
+                <li><a href="/user-profile.html">View Profile</a></li>
+                <li><a href="javascript:logout()">Logout</a></li>
+              </ul>
+              </li>
+            </ul>
+            <ul id="loggedOut-menu" class="menu right-menu">
+              <li><a href="/sign-up.html" class="button sign-up">Sign Up</a></li>
+              <li><a href="/sign-in.html" class="button sign-in">Sign In</a></li>
             </ul>
           </div>
         </div>
@@ -33,7 +38,7 @@
           <div id="event-add" class="large-12 columns">
             <div class="row">
               <div class="small-12 large-12 columns">
-                <h2>Add Event</h2>
+                <h2>Create Event</h2>
                 <hr/>
               </div>
             </div>
@@ -49,9 +54,35 @@
               <div class="row">
                 <div class="small-12 large-5 columns">
                   <label for="eventType">Event Type
-                    <input type="text" id="eventType" name="eventType" placeholder="Event Type" required />
+                    <input type="text" list="eventTypeList" id="eventType" name="eventType" />
+                    <!--<input type="text" id="eventType" name="eventType" placeholder="Event Type" required />-->
                   </label>
                 </div>
+                <datalist id="eventTypeList">
+                  <option value="Conference">Conference</option>
+                  <option value="Seminar">Seminar</option>
+                  <option value="Meetings">Meeting</option>
+                  <option value="Team Building">Team Building</option>
+                  <option value="Trade Show">Trade Show</option>
+                  <option value="Business Dinner">Business Dinner</option>
+                  <option value="Golf Event">Golf Event</option>
+                  <option value="Press Conference">Press Conference</option>
+                  <option value="Networking Event">Networking Event</option>
+                  <option value="Incentive Travel">Incentive Travel</option>
+                  <option value="Opening Ceremony">Opening Ceremony</option>
+                  <option value="Product Launch">Product Launch</option>
+                  <option value="Theme Party">Theme Party</option>
+                  <option value="VIP Event">VIP Events</option>
+                  <option value="Trade Fair">Trade Fair</option>
+                  <option value="Shareholder Meeting">Shareholder Meeting</option>
+                  <option value="Award Ceremony">Award Ceremony</option>
+                  <option value="Incentive Event">Incentive Event</option>
+                  <option value="Board Meeting">Board Meeting</option>
+                  <option value="Executive Retreat">Executive Retreat</option>
+                  <option value="Wedding">Wedding</option>
+                  <option value="Birthday">Birthday</option>
+                  <option value="Family Event">Family Event</option>
+                </datalist>
                 <div class="small-12 large-4 columns end">
                   <label for="eventHost">Host
                     <input type="text" id="eventHost" name="eventHost" placeholder="Host Name" required />
@@ -152,12 +183,20 @@
         </div>
         <!-- #event-category -->
       </div>
+    </body>
 
-      <script type="text/javascript">
-        $("#eventType").val(getParameterByName('eventType'));
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+    <script type="text/javascript" src="bower_components/foundation-sites/dist/foundation.min.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+    <script type="text/javascript">
+      // Set #eventType field
+      $("#eventType").val(getParameterByName('eventType'));
 
-        var ref = new Firebase("https://pang-events.firebaseio.com");
-        var eventsRef = ref.child('events');
+      var ref = new Firebase("https://pang-events.firebaseio.com");
+      var eventsRef = ref.child('events');
+
+      $("#event-add-form").on("submit",function(event) {
         var data = {
           eventName: $("#eventName").val(),
           eventType: $("#eventType").val(),
@@ -168,29 +207,42 @@
           eventAddressState: $("#eventAddressState").val(),
           eventAddressZip: $("#eventAddressZip").val()
         };
-        
-        $("#event-add-form").on("submit",function(event) {
-          event.preventDefault();
-          console.log(data);
-          eventsRef.push().set(data); 
-        });
 
-        var isNewUser = true;
+        event.preventDefault();
+        console.log(data);
+        eventsRef.push().set(data);
+      });
 
-        ref.onAuth(function(authData) {
-          if (authData && isNewUser) {
-            // save the user's profile into the database so we can list users,
-            // use them in Security and Firebase Rules, and show profiles
-            var userData = {
-              provider: authData.provider,
-              name: getName(authData)
-            };
-            console.log(userData);
-            ref.child("users").child(authData.uid).set(userData);
-            $(".credentials").html('<a href="javascript:logout()" class="button">' + userData.name + '</button>');
-          }
-        });
+      var isNewUser = true;
 
-      </script>
-    </body>
+      ref.onAuth(function(authData) {
+        if (authData && isNewUser) {
+          // save the user's profile into the database so we can list users,
+          // use them in Security and Firebase Rules, and show profiles
+          var userData = {
+            provider: authData.provider,
+            name: getName(authData)
+          };
+
+          // Get user data
+          var userDataRef = ref.child("userData").child(authData.uid);
+          userDataRef.on("value",function(snapshot,prevChildKey) {
+            var userInfo = snapshot.val();
+            console.log(userInfo.firstname);
+            $("#displayedUser").html(userInfo.firstname);
+          });
+
+          // Show #loggedIn-menu
+          $(".right-menu").hide();
+          $("#loggedIn-menu").show();
+          $("#displayedUser").html(userData.name);
+
+        } else {
+          // Show #loggedOut-menu
+          $(".right-menu").hide();
+          $("#loggedOut-menu").show();
+          window.location.replace("sign-in.html");
+        }
+      });
+    </script>
 </html>

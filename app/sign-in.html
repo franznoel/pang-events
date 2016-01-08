@@ -19,11 +19,6 @@
               <li class="menu-text"><a href="/">PangEvents</a></li>
             </ul>
           </div>
-          <div class="top-bar-right">
-            <ul class="menu">
-              <li><button type="button" onclick="javascript:window.location.href='/sign-in.html'" class="button">Sign In</button></li>
-            </ul>
-          </div>
         </div>
       </header>
 
@@ -35,13 +30,13 @@
               <div id="login-error">
               </div>
               <form id="login-form" method="post">
-                <label for="username">Email Address
-                  <input type="text" id="login-username" class="form-control" name="username" value="" placeholder="Username" autocomplete="username"/>
+                <label for="loginEmail">Email Address
+                  <input type="text" id="loginEmail" class="form-control" name="loginEmail" value="" placeholder="Email Address" autocomplete="username"/>
                 </label>
-                <label for="username">Password
-                  <input type="password" id="login-password" class="form-control" name="password" value="" placeholder="Password" autocomplete="password" />
+                <label for="loginPassword">Password
+                  <input type="password" id="loginPassword" class="form-control" name="loginPassword" value="" placeholder="Password" autocomplete="password" />
                 </label>
-                <input type="submit" name="submit" class="button primary" value="Submit" />
+                <input type="submit" name="submit" class="button primary" value="Sign In" />
                 <a href="/reset-password.html" class="button secondary">Forgot Password</a>
                 <hr/>
                 <h5>Signup or Login with:</h5>
@@ -77,10 +72,10 @@
         // Get Authentication values
         $("#login-form").on("submit",function(event) {
           event.preventDefault();
-          var username = $('#login-username').val();
-          var password = $('#login-password').val();
+          var email = $('#loginEmail').val();
+          var password = $('#loginPassword').val();
           var data = {
-            email: username,
+            email: email,
             password: password 
           }
 

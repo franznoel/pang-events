@@ -7,23 +7,26 @@
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
-      <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-      <script type="text/javascript" src="bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
-      <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
-      <script type="text/javascript" src="bower_components/foundation-sites/dist/foundation.min.js"></script>
-      <script type="text/javascript" src="script.js"></script>
-
       <header>
         <div id="menu" class="top-bar">
           <div class="top-bar-left">
             <ul class="menu" data-dropdown-menu>
-              <li class="menu-text"><a href="/" class="logo">PangEvents</a></li>
+              <li class="menu-text"><a href="/index.html" class="logo">PangEvents</a></li>
             </ul>
           </div>
           <div class="top-bar-right">
-            <ul class="menu button-group">
-              <li class="credentials"><a href="/sign-up.html" class="button sign-up">Sign Up</a></li>
-              <li class="credentials"><a href="/sign-in.html" class="button sign-in">Sign In</a></li>
+            <ul id="loggedIn-menu" class="dropdown menu right-menu" data-dropdown-menu>
+            <li class="has-submenu">
+              <a href="#" class="button" id="displayedUser"></a>
+              <ul class="submenu menu vertical displayedUser-dropdown" data-submenu>
+                <li><a href="/user-profile.html">View Profile</a></li>
+                <li><a href="javascript:logout()">Logout</a></li>
+              </ul>
+              </li>
+            </ul>
+            <ul id="loggedOut-menu" class="menu right-menu">
+              <li><a href="/sign-up.html" class="button sign-up">Sign Up</a></li>
+              <li><a href="/sign-in.html" class="button sign-in">Sign In</a></li>
             </ul>
           </div>
         </div>
@@ -148,7 +151,12 @@
           </div>
         </div>
       </div><!-- #content -->
-
+    </body>
+      <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+      <script type="text/javascript" src="bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
+      <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+      <script type="text/javascript" src="bower_components/foundation-sites/dist/foundation.min.js"></script>
+      <script type="text/javascript" src="script.js"></script>
       <script type="text/javascript">
         // we would probably save a profile when we register new users on our site
         // we could also read the profile to see if it's null
@@ -164,11 +172,25 @@
               provider: authData.provider,
               name: getName(authData)
             };
-            console.log(userData);
-            ref.child("users").child(authData.uid).set(userData);
-            $(".credentials").html('<a href="javascript:logout()" class="button">' + userData.name + '</button>');
+
+            // Get user data
+            var userDataRef = ref.child("userData").child(authData.uid);
+            userDataRef.on("value",function(snapshot,prevChildKey) {
+              var userInfo = snapshot.val();
+              console.log(userInfo.firstname);
+              $("#displayedUser").html(userInfo.firstname);
+            });
+
+            // Show #loggedIn-menu
+            $(".right-menu").hide();
+            $("#loggedIn-menu").show();
+            $("#displayedUser").html(userData.name);
+            // console.log(authData.uid);
+          } else {
+            // Show #loggedOut-menu
+            $(".right-menu").hide();
+            $("#loggedOut-menu").show();
           }
         });
       </script>
-    </body>
 </html>

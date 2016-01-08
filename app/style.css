@@ -59,9 +59,19 @@ body {
 #menu .button.sign-in:hover {
     background-color:#8edb59;
 }
-#menu .credentials {
+#menu #displayedUser {
     text-transform:capitalize;
 }
+#menu .dropdown.menu .is-dropdown-submenu-parent.opens-left .submenu {
+    background-color:#ffffff;
+    border:1px solid #21cbe8;
+    display:block;
+    right:0;
+}
+#menu .dropdown.menu .submenu > li > a:hover {
+    background-color:#e5f3fc;
+}
+
 
 
 /* #content */
