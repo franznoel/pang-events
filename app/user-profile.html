@@ -238,7 +238,7 @@
       });
 
       preparePasswordValidation();
-      
+
       // Change password
       $("#change-password-form").validate({
         rules: {
@@ -270,20 +270,10 @@
             email: "Email address should be following proper format email@example.com"
           },
           changeOldPassword: {
-            required: true,
-            minlength: 8,
-            maxlength: 20,
-            passwordHasNumber: true,
-            passwordHasUppercase: true,
-            passwordHasSpecialCharacters: true,
+            required: "Please enter the old password.",
           }, 
           changeNewPassword: {
-            required: true,
-            minlength: 8,
-            maxlength: 20,
-            passwordHasNumber: true,
-            passwordHasUppercase: true,
-            passwordHasSpecialCharacters: true,
+            required: "Please enter the new password.",
           }
         },
         submitHandler: function() {
