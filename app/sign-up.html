@@ -93,9 +93,7 @@
     var userDataRef = ref.child('userData');
 
     // Prepare validations
-    createValidation("passwordHasNumber",/\d/,"Passwords should have a number.");
-    createValidation("passwordHasUppercase",/[A-Z]/,"Passwords should have uppercase.");
-    createValidation("passwordHasSpecialCharacters",/[^a-zA-Z\d]/,"Passwords should have special characters such as exclamation points (!), question marks (?), hashtags (#), periods(.), commas(,), or slash(/).");
+    preparePasswordValidation();
 
     // Cancel default submission
     $("#registration-form").submit(function(e) {
@@ -127,9 +125,22 @@
         $("#errorMessage").html(html);
       },
       rules: {
+          signupFirstname: {
+            required: true,
+            minlength: 2,
+            maxlength: 100,
+          },
+          signupFirstname: {
+            required: true,
+            minlength: 2,
+            maxlength: 100,
+          },
           signupEmail: {
             required: true,
             email: true
+            minlength: 3,
+            maxlength: 254,
+            completeEmail: true,
           },
           signupPassword: {
             required: true,
@@ -146,6 +157,16 @@
           },
       },
       messages: {
+          signupFirstname: {
+            required: true,
+            minlength: 2,
+            maxlength: 100,
+          },
+          signupFirstname: {
+            required: true,
+            minlength: 2,
+            maxlength: 100,
+          },
           signupEmail: {
             required: "Email address is a required field.",
             email: "Email address should be following proper format email@example.com"
