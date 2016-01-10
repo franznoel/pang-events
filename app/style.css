@@ -71,6 +71,9 @@ body {
 #menu .dropdown.menu .submenu > li > a:hover {
     background-color:#e5f3fc;
 }
+#menu ul .submenu {
+    background-color:#ffffff;
+}
 
 
 
@@ -205,7 +208,13 @@ body {
 .note {
     font-size:10px;
 }
-
+label[id*='-error'] {
+    color:#cc0000;
+    font-style:italic;
+    font-size:0.475rem;
+    position:relative;
+    bottom:1rem;
+}
 
 /* Guest List */
 .guest-list {

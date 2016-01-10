@@ -43,6 +43,13 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="small-12 large-12 columns">
+                <div id="errorMessage">
+                </div>
+              </div>
+            </div>
+
             <form id="event-add-form" method="post" action="">
               <div class="row">
                 <div class="small-12 large-12 columns">
@@ -186,6 +193,8 @@
     </body>
 
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery-validation/dist/additional-methods.min.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
     <script type="text/javascript" src="bower_components/foundation-sites/dist/foundation.min.js"></script>
     <script type="text/javascript" src="/script.js"></script>
@@ -196,21 +205,103 @@
       var ref = new Firebase("https://pang-events.firebaseio.com");
       var eventsRef = ref.child('events');
 
-      $("#event-add-form").on("submit",function(event) {
-        var data = {
-          eventName: $("#eventName").val(),
-          eventType: $("#eventType").val(),
-          eventHost: $("#eventHost").val(),
-          eventStartTime: $("#eventStartTime").val(),
-          eventAddress: $("#eventAddress").val(),
-          eventAddressCity: $("#eventAddressCity").val(),
-          eventAddressState: $("#eventAddressState").val(),
-          eventAddressZip: $("#eventAddressZip").val()
-        };
-
-        event.preventDefault();
-        console.log(data);
-        eventsRef.push().set(data);
+      // Submit form
+      $("#event-add-form").validate({
+        rules: {
+          eventName: {
+            required: true,
+          },
+          eventType: {
+            required: true,
+          }, 
+          eventHost: {
+            required: true,
+          },
+          eventStartTime: {
+            required: true,
+          },
+          eventEndTime: {
+            required: true,
+          },
+          eventAddress: {
+            required: true,
+          },
+          eventAddressCity: {
+            required: true,
+          },
+          eventAddressState: {
+            required: true,
+          },
+          eventAddressZip: {
+            required: true,
+          }
+        }, 
+        messages: {
+          eventName: {
+            required: "Event Name is a required field.",
+          },
+          eventType: {
+            required: "Event Type is a required field.",
+          }, 
+          eventHost: {
+            required: "You must enter an Event Host. Is it you?",
+          },
+          eventStartTime: {
+            required: "You need to declare when the event is going to start.",
+          },
+          eventEndTime: {
+            required: "You need to declare when the event is going to end.",
+          },
+          eventAddress: {
+            required: "Address is a required field.",
+          },
+          eventAddressCity: {
+            required: "City is a required field.",
+          },
+          eventAddressState: {
+            required: "State is a required field.",
+          },
+          eventAddressZip: {
+            required: "Zip Code is a required field.",
+          }
+        },
+        submitHandler: function() {
+          var data = {
+            eventName: $("#eventName").val(),
+            eventType: $("#eventType").val(),
+            eventHost: $("#eventHost").val(),
+            eventStartTime: $("#eventStartTime").val(),
+            eventAddress: $("#eventAddress").val(),
+            eventAddressCity: $("#eventAddressCity").val(),
+            eventAddressState: $("#eventAddressState").val(),
+            eventAddressZip: $("#eventAddressZip").val()
+          };
+          // console.log(data);
+          eventsRef.push().set(data,function(error) {
+            if (error) {
+              var message = createErrorMessage("error","Errors found! " + error);
+              $("#errorMessage").html(message);
+              $("#errorMessage").show();
+            } else {
+              var message = createErrorMessage("success","Successfully saved events.");
+              $("#errorMessage").html(message);
+              $("#errorMessage").show();
+            }
+          });
+          return false;
+        },
+        invalidHandler: function(event, validator) {
+          var errors = validator.numberOfInvalids();
+          if (errors) {
+            var message = errors == 1
+              ? createErrorMessage("error","You missed 1 field. It has been highlighted")
+              : createErrorMessage("error","You missed " + errors + " fields. They have been highlighted.");
+            $("#errorMessage").html(message);
+            $("#errorMessage").show();
+          } else {
+            $("#errorMessage").hide();
+          }
+        }
       });
 
       var isNewUser = true;
@@ -228,7 +319,7 @@
           var userDataRef = ref.child("userData").child(authData.uid);
           userDataRef.on("value",function(snapshot,prevChildKey) {
             var userInfo = snapshot.val();
-            console.log(userInfo.firstname);
+            // console.log(userInfo.firstname);
             $("#displayedUser").html(userInfo.firstname);
           });
 

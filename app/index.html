@@ -177,7 +177,6 @@
             var userDataRef = ref.child("userData").child(authData.uid);
             userDataRef.on("value",function(snapshot,prevChildKey) {
               var userInfo = snapshot.val();
-              console.log(userInfo.firstname);
               $("#displayedUser").html(userInfo.firstname);
             });
 
