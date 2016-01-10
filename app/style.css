@@ -121,9 +121,18 @@ body {
 #event-list .eventDescription p {
     font-size:14px;
 }
+#event-list .event-list {
+    color:#888888;
+    text-shadow:1px 1px 1px #333333;
+    text-align:center;
+}
 #event-list .no-events {
     color:#888888;
-    text-shadow:1px 1px 1px #ffffff;
+    text-shadow:1px 1px 1px #333333;
+    text-align:center;
+}
+.page-title {
+    text-transform:capitalize;
 }
 
 /* .custom-font */
@@ -217,7 +226,7 @@ label[id*='-error'] {
 }
 
 /* Guest List */
-.guest-list {
+#guest-list {
     padding:0 30px 0 30px;
 }
 

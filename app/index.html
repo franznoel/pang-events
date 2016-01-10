@@ -54,100 +54,52 @@
 
           <hr/>
           <!-- #event-list -->
-          <div id="event-list" class="row">
+          <div id="event-list" class="row event-container">
             <div class="large-12 columns">
-              <div class="row">
-                <a href="/event-edit.html" class="large-4 columns">
-                  <div class="callout event">
-                    <h3 class="eventTitle">Star Wars Movie Night</h3>
-                    <span class="success label">Family Events</span>
-                    <span class="badge" title="Attendees">4</span>
-                    <div class="eventDescription">
-                      <p>We are going to watch Star Wars tonight!</p>
-                    </div>
-                    <span class="label alert eventHost">Richard</span>
-                    <div class="eventLocation">
-                      12345 Main St., Los Angeles, CA 91325
-                    </div>
-                    <span class="date primary label">2015-Jan-12</span>
-                    <span class="time primary label">12:30 PM</span>
-                  </div>
-                </a>
-                <a href="/event-edit.html" class="large-4 columns">
-                  <div class="callout event">
-                    <h3 class="eventTitle">Jeff and Paula Wedding</h3>
-                    <span class="success label">Wedding</span>
-                    <span class="badge" title="Attendees">40</span>
-                    <div class="eventDescription">
-                      <p>We're going to get married, and you're invited</p>
-                    </div>
-                    <span class="label alert eventHost">Jeff</span>
-                    <div class="eventLocation">
-                      12345 Main St., Los Angeles, CA 91325
-                    </div>
-                    <span class="date primary label">2015-Jan-12</span>
-                    <span class="time primary label">12:30 PM</span>
-                  </div>
-                </a>
-                <a href="/event-edit.html" class="large-4 columns">
-                  <div class="callout event">
-                    <h3 class="eventTitle">Flash Deals</h3>
-                    <span class="success label">Product Launch</span>
-                    <span class="badge" title="Number of Sales">10</span>
-                    <div class="eventDescription">
-                      <p>We're launching a guitar, piano, drums, and bass sale.</p>
-                    </div>
-                    <span class="label alert eventHost">Doming</span>
-                    <div class="eventLocation">
-                      12345 Main St., Los Angeles, CA 91325
-                    </div>
-                    <span class="date primary label">2015-Jan-12</span>
-                    <span class="time primary label">12:30 PM</span>
-                  </div>
-                </a>
+              <div class="row events">
+                <p class="event-list">Loading...</p>
               </div>
             </div>
           </div>
-          <!-- No events 
-          <div class="row">
+          <!-- #no-events -->
+          <div id="no-events" class="row event-container">
             <div class="large-12 columns">
               <div class="row">
-                  <div class="small-12 large-offset-4 large-4 columns">
-                    <p class="no-events">There are currently no events listed.</p>
+                  <div class="small-12 large-offset-3 large-6 columns end">
+                    <p class="no-events">There are currently no events listed. Start an event!</p>
                   </div>
               </div>
             </div>
           </div>
-          -->
         </div>
 
         <!-- #event-category -->
         <div class="large-2 columns">
           <h4>Start an Event</h4>
           <div id="event-category" class="stacked button-group">
-            <a href="/event-create.html?eventType=Conference" class="button success">Conference</a>
-            <a href="/event-create.html?eventType=Seminar" class="button success">Seminar</a>
-            <a href="/event-create.html?eventType=Meetings" class="button success">Meeting</a>
-            <a href="/event-create.html?eventType=Team+Building" class="button success">Team Building</a>
-            <a href="/event-create.html?eventType=Trade+Show" class="button success">Trade Show</a>
-            <a href="/event-create.html?eventType=Business+Dinner" class="button success">Business Dinner</a>
-            <a href="/event-create.html?eventType=Golf+Event" class="button success">Golf Event</a>
-            <a href="/event-create.html?eventType=Press+Conference" class="button success">Press Conference</a>
-            <a href="/event-create.html?eventType=Networking+Event" class="button success">Networking Event</a>
-            <a href="/event-create.html?eventType=Incentive+Travel" class="button success">Incentive Travel</a>
-            <a href="/event-create.html?eventType=Opening+Ceremony" class="button success">Opening Ceremony</a>
-            <a href="/event-create.html?eventType=Product+Launch" class="button success">Product Launch</a>
-            <a href="/event-create.html?eventType=Theme+Party" class="button success">Theme Party</a>
-            <a href="/event-create.html?eventType=VIP+Event" class="button success">VIP Events</a>
-            <a href="/event-create.html?eventType=Trade+Fair" class="button success">Trade Fair</a>
-            <a href="/event-create.html?eventType=Shareholder+Meeting" class="button success">Shareholder Meeting</a>
-            <a href="/event-create.html?eventType=Award+Ceremony" class="button success">Award Ceremony</a>
-            <a href="/event-create.html?eventType=Incentive+Event" class="button success">Incentive Event</a>
-            <a href="/event-create.html?eventType=Board+Meeting" class="button success">Board Meeting</a>
-            <a href="/event-create.html?eventType=Executive+Retreat" class="button success">Executive Retreat</a>
-            <a href="/event-create.html?eventType=Wedding" class="button success">Wedding</a>
-            <a href="/event-create.html?eventType=Birthday" class="button success">Birthday</a>
-            <a href="/event-create.html?eventType=Family+Event" class="button success">Family Event</a>
+            <a href="/event.html?eventType=Conference&action=create" class="button success">Conference</a>
+            <a href="/event.html?eventType=Seminar&action=create" class="button success">Seminar</a>
+            <a href="/event.html?eventType=Meetings&action=create" class="button success">Meeting</a>
+            <a href="/event.html?eventType=Team+Building&action=create" class="button success">Team Building</a>
+            <a href="/event.html?eventType=Trade+Show&action=create" class="button success">Trade Show</a>
+            <a href="/event.html?eventType=Business+Dinner&action=create" class="button success">Business Dinner</a>
+            <a href="/event.html?eventType=Golf+Event&action=create" class="button success">Golf Event</a>
+            <a href="/event.html?eventType=Press+Conference&action=create" class="button success">Press Conference</a>
+            <a href="/event.html?eventType=Networking+Event&action=create" class="button success">Networking Event</a>
+            <a href="/event.html?eventType=Incentive+Travel&action=create" class="button success">Incentive Travel</a>
+            <a href="/event.html?eventType=Opening+Ceremony&action=create" class="button success">Opening Ceremony</a>
+            <a href="/event.html?eventType=Product+Launch&action=create" class="button success">Product Launch</a>
+            <a href="/event.html?eventType=Theme+Party&action=create" class="button success">Theme Party</a>
+            <a href="/event.html?eventType=VIP+Event&action=create" class="button success">VIP Events</a>
+            <a href="/event.html?eventType=Trade+Fair&action=create" class="button success">Trade Fair</a>
+            <a href="/event.html?eventType=Shareholder+Meeting&action=create" class="button success">Shareholder Meeting</a>
+            <a href="/event.html?eventType=Award+Ceremony&action=create" class="button success">Award Ceremony</a>
+            <a href="/event.html?eventType=Incentive+Event&action=create" class="button success">Incentive Event</a>
+            <a href="/event.html?eventType=Board+Meeting&action=create" class="button success">Board Meeting</a>
+            <a href="/event.html?eventType=Executive+Retreat&action=create" class="button success">Executive Retreat</a>
+            <a href="/event.html?eventType=Wedding&action=create" class="button success">Wedding</a>
+            <a href="/event.html?eventType=Birthday&action=create" class="button success">Birthday</a>
+            <a href="/event.html?eventType=Family+Event&action=create" class="button success">Family Event</a>
           </div>
         </div>
       </div><!-- #content -->
@@ -164,6 +116,8 @@
         var isNewUser = true;
 
         var ref = new Firebase("https://pang-events.firebaseio.com");
+
+        // Authentication
         ref.onAuth(function(authData) {
           if (authData && isNewUser) {
             // save the user's profile into the database so we can list users,
@@ -191,5 +145,24 @@
             $("#loggedOut-menu").show();
           }
         });
+
+        // Search for events
+        var eventsRef = ref.child("events");
+        eventsRef.on("value",function(eventsSnapshot) {
+          var eventTotal = eventsSnapshot.numChildren();
+          var events = getEvents(eventsRef,eventsSnapshot);
+          var eventsHtml = getEventsHtml(events);
+          $("#event-list").html(eventsHtml);
+
+          // Display appropriate event containers
+          $(".event-container").hide();
+          (eventTotal > 0) ? $("#event-list").show() : $("#no-events").show();
+        });
+
       </script>
 </html>
+
+
+
+
+

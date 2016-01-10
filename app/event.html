@@ -34,11 +34,11 @@
       </header>
 
       <div id="content" class="row">
-        <div class="large-12 columns">
+        <div class="small-12 large-12 columns">
           <div id="event-add" class="large-12 columns">
             <div class="row">
               <div class="small-12 large-12 columns">
-                <h2>Create Event</h2>
+                <h2 class="page-title">Create Event</h2>
                 <hr/>
               </div>
             </div>
@@ -96,19 +96,8 @@
                   </label>
                 </div>
               </div>
+              <hr/>
               <div class="row">
-                <div class="small-12 large-6 columns">
-                  <fieldset class="fieldset">
-                    <h4>Event Times</h4>
-                    <label for="eventStartTime">Event Start
-                      <input type="datetime-local" id="eventStartTime" name="eventStartTime" placeholder="mm/dd/yy hh:mm pm" required />
-                    </label>
-                    <label for="eventEndTime">Event End
-                      <input type="datetime-local" id="eventEndTime" name="eventEndTime" placeholder="mm/dd/yy hh:mm pm" required />
-                    </label>
-                  </fieldset>
-                </div>
-
                 <div class="small-12 large-6 columns">
                   <fieldset class="fieldset">
                     <h4>Event Address</h4>
@@ -180,8 +169,30 @@
                         </label>
                       </div>
                     </div>
-                  </div>
-                </fieldset>
+                    <hr/>
+                    <h4>Event Times</h4>
+                    <label for="eventStartTime">Event Start
+                      <input type="datetime-local" id="eventStartTime" name="eventStartTime" placeholder="mm/dd/yy hh:mm pm" required />
+                    </label>
+                    <label for="eventEndTime">Event End
+                      <input type="datetime-local" id="eventEndTime" name="eventEndTime" placeholder="mm/dd/yy hh:mm pm" required />
+                    </label>
+                  </fieldset>
+                </div>
+                <div class="small-12 large-6 columns">
+                  <label for="eventDescription">Description
+                    <textarea id="eventDescription" name="eventDescription" rows="4" placeholder="Write something to your guests even just a short description." required></textarea>
+                  </label>
+                  <hr/>
+                  <h5>Guests</h5>
+                  <label for="eventGuest">Event Guest <span class="note">Make sure to Save Event to save guest list.</span>
+                    <input type="text" id="eventGuest" name="eventGuest" placeholder="Email Address" />
+                  </label>
+                  <input type="button" id="add-guest" class="button primary tiny" value="Add Guest" />
+                  <input type="button" id="send-invitation" class="button secondary tiny" value="Send Invitation" />
+                  <ul id="guest-list">
+                  </ul>
+                </div>
               </div>
               <input type="submit" name="submit" class="button" value="Save Event">
               <a href="/" class="button secondary">Cancel</a>
@@ -204,105 +215,7 @@
 
       var ref = new Firebase("https://pang-events.firebaseio.com");
       var eventsRef = ref.child('events');
-
-      // Submit form
-      $("#event-add-form").validate({
-        rules: {
-          eventName: {
-            required: true,
-          },
-          eventType: {
-            required: true,
-          }, 
-          eventHost: {
-            required: true,
-          },
-          eventStartTime: {
-            required: true,
-          },
-          eventEndTime: {
-            required: true,
-          },
-          eventAddress: {
-            required: true,
-          },
-          eventAddressCity: {
-            required: true,
-          },
-          eventAddressState: {
-            required: true,
-          },
-          eventAddressZip: {
-            required: true,
-          }
-        }, 
-        messages: {
-          eventName: {
-            required: "Event Name is a required field.",
-          },
-          eventType: {
-            required: "Event Type is a required field.",
-          }, 
-          eventHost: {
-            required: "You must enter an Event Host. Is it you?",
-          },
-          eventStartTime: {
-            required: "You need to declare when the event is going to start.",
-          },
-          eventEndTime: {
-            required: "You need to declare when the event is going to end.",
-          },
-          eventAddress: {
-            required: "Address is a required field.",
-          },
-          eventAddressCity: {
-            required: "City is a required field.",
-          },
-          eventAddressState: {
-            required: "State is a required field.",
-          },
-          eventAddressZip: {
-            required: "Zip Code is a required field.",
-          }
-        },
-        submitHandler: function() {
-          var data = {
-            eventName: $("#eventName").val(),
-            eventType: $("#eventType").val(),
-            eventHost: $("#eventHost").val(),
-            eventStartTime: $("#eventStartTime").val(),
-            eventAddress: $("#eventAddress").val(),
-            eventAddressCity: $("#eventAddressCity").val(),
-            eventAddressState: $("#eventAddressState").val(),
-            eventAddressZip: $("#eventAddressZip").val()
-          };
-          // console.log(data);
-          eventsRef.push().set(data,function(error) {
-            if (error) {
-              var message = createErrorMessage("error","Errors found! " + error);
-              $("#errorMessage").html(message);
-              $("#errorMessage").show();
-            } else {
-              var message = createErrorMessage("success","Successfully saved events.");
-              $("#errorMessage").html(message);
-              $("#errorMessage").show();
-            }
-          });
-          return false;
-        },
-        invalidHandler: function(event, validator) {
-          var errors = validator.numberOfInvalids();
-          if (errors) {
-            var message = errors == 1
-              ? createErrorMessage("error","You missed 1 field. It has been highlighted")
-              : createErrorMessage("error","You missed " + errors + " fields. They have been highlighted.");
-            $("#errorMessage").html(message);
-            $("#errorMessage").show();
-          } else {
-            $("#errorMessage").hide();
-          }
-        }
-      });
+      var action = getParameterByName("action");
 
       var isNewUser = true;
 
@@ -335,5 +248,177 @@
           window.location.replace("sign-in.html");
         }
       });
+    
+      $(document).ready(function() {
+        // Change page title
+        var pageTitle = action + " Event";
+        $(".page-title").html(pageTitle);
+
+        // Popupate event form
+        if (action=="edit") {
+          var key = getParameterByName('key');
+          var eventsRef = ref.child("events").child(key);
+          eventsRef.on("value",function(snapshot) {
+            var e = snapshot.val();
+            $("#eventName").val(e.eventName);
+            $("#eventType").val(e.eventType);
+            $("#eventHost").val(e.eventHost);
+            $("#eventAddress").val(e.eventAddress);
+            $("#eventDescription").val(e.eventDescription);
+            $("#eventAddressCity").val(e.eventAddressCity);
+            $("#eventAddressState").val(e.eventAddressState);
+            $("#eventAddresCity").val(e.eventAddressCity);
+            $("#eventAddressZip").val(e.eventAddressZip);
+            $("#eventStartTime").val(e.eventStartTime);
+            $("#eventEndTime").val(e.eventEndTime);
+            var guestListHtml = getGuestListHtml(e.guests); 
+            $("#guest-list").html(guestListHtml);
+          });
+        }
+
+        // add guest to guest list
+        $("#add-guest").on("click",function(e) {
+          e.preventDefault();
+          var eventGuest = $("#eventGuest").val();
+          if (eventGuest!="") {
+            eventGuest = (eventGuest).trim();
+            $("#guest-list").prepend("<li>"+ eventGuest +"</li>");
+          } else {
+            var message = createErrorMessage("Error","Guest list should not be blank.");
+            displayErrorMessage(message);
+          }
+          
+          $("#eventGuest").val(""); // Clear eventGuest field.
+        });
+
+        // Submit form
+        $("#event-add-form").validate({
+          rules: {
+            eventName: {
+              required: true,
+            },
+            eventType: {
+              required: true,
+            }, 
+            eventHost: {
+              required: true,
+            },
+            eventDescription: {
+              required: true,
+            },
+            eventStartTime: {
+              required: true,
+            },
+            eventEndTime: {
+              required: true,
+            },
+            eventAddress: {
+              required: true,
+            },
+            eventAddressCity: {
+              required: true,
+            },
+            eventAddressState: {
+              required: true,
+            },
+            eventAddressZip: {
+              required: true,
+            }
+          }, 
+          messages: {
+            eventName: {
+              required: "Event Name is a required field.",
+            },
+            eventType: {
+              required: "Event Type is a required field.",
+            }, 
+            eventHost: {
+              required: "Event Host is a required field.",
+            },
+            eventDescription: {
+              required: "Enter a message for your guests.",
+            },
+            eventStartTime: {
+              required: "Declare when the event is going to start.",
+            },
+            eventEndTime: {
+              required: "Declare when the event is going to end.",
+            },
+            eventAddress: {
+              required: "Address is a required field.",
+            },
+            eventAddressCity: {
+              required: "City is a required field.",
+            },
+            eventAddressState: {
+              required: "State is a required field.",
+            },
+            eventAddressZip: {
+              required: "Zip Code is a required field.",
+            }
+          },
+          submitHandler: function() {
+            var data = {
+              eventName: $("#eventName").val(),
+              eventType: $("#eventType").val(),
+              eventHost: $("#eventHost").val(),
+              eventDescription: $("#eventDescription").val(),
+              eventStartTime: $("#eventStartTime").val(),
+              eventEndTime: $("#eventEndTime").val(),
+              eventAddress: $("#eventAddress").val(),
+              eventAddressCity: $("#eventAddressCity").val(),
+              eventAddressState: $("#eventAddressState").val(),
+              eventAddressZip: $("#eventAddressZip").val(),
+              guests: getGuests(),
+            };
+
+            // Create or update event
+            if (action=="create") {
+              eventsRef.push().set(data,function(error) {
+                if (error) {
+                  var message = createErrorMessage("error","Errors found! " + error);
+                  $("#errorMessage").html(message);
+                  $("#errorMessage").show();
+                } else {
+                  var message = createErrorMessage("success","Successfully saved events.");
+                  $("#errorMessage").html(message);
+                  $("#errorMessage").show();
+                }
+              });
+            } else if (action=="edit") {
+              var key = getParameterByName("key");
+              var eventRef = eventsRef.child(key);
+              eventRef.update(data,function(error) {
+                console.log(data);
+                if (error) {
+                  var message = createErrorMessage("error","Errors found! " + error);
+                  $("#errorMessage").html(message);
+                  $("#errorMessage").show();
+                } else {
+                  var message = createErrorMessage("success","Successfully saved events.");
+                  $("#errorMessage").html(message);
+                  $("#errorMessage").show();
+                }
+              });
+            }
+            return false;
+          },
+          invalidHandler: function(event, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+              var message = errors == 1
+                ? createErrorMessage("error","You missed 1 field. It has been highlighted")
+                : createErrorMessage("error","You missed " + errors + " fields. They have been highlighted.");
+              $("#errorMessage").html(message);
+              $("#errorMessage").show();
+            } else {
+              $("#errorMessage").hide();
+            }
+          }
+        });
+
+
+      });
+
     </script>
 </html>

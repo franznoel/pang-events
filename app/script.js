@@ -17,7 +17,73 @@ function getName(authData) {
   }
 }
 
+// Show data in main page.
+function getEvents(eventsRef,eventsSnapshot) {
+  var events = [];
 
+  eventsSnapshot.forEach(function(data) {
+    var eventRef = eventsRef.child(data.key());
+    eventRef.on("value",function(eventSnapshot) {
+      var e = eventSnapshot.val();
+      events.push({
+        key: data.key(),
+        name: e.eventName,
+        type: e.eventType,
+        host: e.eventHost,
+        address: e.eventAddress,
+        city: e.eventAddressCity,
+        state: e.eventAddressState,
+        zip: e.eventAddressZip,
+        start: e.eventStartTime,
+        end: e.eventEndTime
+      });
+    });
+  });
+
+  return events;
+}
+
+function getEventsHtml(eventList) {
+  var eventHtml = "";
+  var lastEvent = eventList.length;
+  for (var i=0;i<eventList.length;i++) {
+    var e = eventList[i];
+    var isEnd = (lastEvent==i+1) ? ' end' : '';
+    var completeAddress = e.address + ', ' + e.city + ', ' + e.state + ' ' + e.zip;
+    var eventStart = getDateFormat(e.start);
+    eventHtml+= '<a href="/event.html?key='+ e.key +'&action=edit" class="large-4 columns'+ isEnd +'">';
+    eventHtml+= '<div class="callout event">';
+    eventHtml+= '<h3 class="eventTitle">'+ e.name +'</h3>';
+    eventHtml+= '<span class="success label">'+ e.type +'</span>';
+    eventHtml+= ' <span class="badge" title="Attendees">4</span>';
+    eventHtml+= '<div class="eventDescription">';
+    eventHtml+= '<p>We are going to watch Star Wars tonight!</p>';
+    eventHtml+= '</div>';
+    eventHtml+= '<span class="label alert eventHost">'+ e.host +'</span>';
+    eventHtml+= '<div class="eventLocation">' + completeAddress + '</div>';
+    eventHtml+= '<span class="date primary label">'+ eventStart +'</span>';
+    eventHtml+= '</div>';
+    eventHtml+= '</a>';
+  }
+  return eventHtml;
+}
+
+function getGuestListHtml(guests) {
+  var guestListHtml = "";
+  for (var i=0;i<guests.length;i++) {
+    guestListHtml+= "<li>"+ guests[i] +"</li>";
+  }
+  return guestListHtml;
+}
+
+function getGuests() {
+  var guests = [];
+  var guestList = $("#guest-list li").each(function(index) {
+    var guest = $(this).text();
+    guests.push(guest);
+  });
+  return guests;
+}
 
 // Helpers
 function getParameterByName(name) {
@@ -109,5 +175,12 @@ function changePassword(ref,emailAddress,oldPassword,newPassword) {
   });
 }
 
+function getDateFormat(date) {
+  var d = new Date(date);
+  var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];
+  var hours = (d.getHours()< 10) ? ('0'+ d.getHours()) : d.getHours();
+  var minutes = (d.getMinutes()< 10) ? ('0'+ d.getMinutes()) : d.getHours();
+  return month + ', ' + d.getDate() + ' ' + d.getFullYear() + ' - ' + hours + ':' + minutes;
+}
 
 $(document).foundation();
