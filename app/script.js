@@ -69,9 +69,13 @@ function getEventsHtml(eventList) {
 }
 
 function getGuestListHtml(guests) {
-  var guestListHtml = "";
-  for (var i=0;i<guests.length;i++) {
-    guestListHtml+= "<li>"+ guests[i] +"</li>";
+  if (guests) {
+    var guestListHtml = "";
+    for (var i=0;i<guests.length;i++) {
+      guestListHtml+= "<li>"+ guests[i] +"</li>";
+    }
+  } else {
+    var guestsListHtml = null;    
   }
   return guestListHtml;
 }
@@ -79,10 +83,10 @@ function getGuestListHtml(guests) {
 function getGuests() {
   var guests = [];
   var guestList = $("#guest-list li").each(function(index) {
-    var guest = $(this).text();
+    var guest = $(this).text().trim();
     guests.push(guest);
   });
-  return guests;
+  return guests
 }
 
 // Helpers

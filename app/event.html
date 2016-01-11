@@ -271,7 +271,7 @@
             $("#eventAddressZip").val(e.eventAddressZip);
             $("#eventStartTime").val(e.eventStartTime);
             $("#eventEndTime").val(e.eventEndTime);
-            var guestListHtml = getGuestListHtml(e.guests); 
+            var guestListHtml = getGuestListHtml(e.guests);
             $("#guest-list").html(guestListHtml);
           });
         }
@@ -372,6 +372,8 @@
               guests: getGuests(),
             };
 
+            // console.log(getGuests());
+
             // Create or update event
             if (action=="create") {
               eventsRef.push().set(data,function(error) {
@@ -388,8 +390,11 @@
             } else if (action=="edit") {
               var key = getParameterByName("key");
               var eventRef = eventsRef.child(key);
-              eventRef.update(data,function(error) {
-                console.log(data);
+              eventsRef.on("value",function(snapshot) {
+                var e = snapshot.val()
+                console.log(e.guests);
+              });
+              eventsRef.update(data,function(error) {
                 if (error) {
                   var message = createErrorMessage("error","Errors found! " + error);
                   $("#errorMessage").html(message);
