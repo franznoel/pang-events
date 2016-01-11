@@ -36,12 +36,12 @@
         <div class="large-10 columns">
           <div class="row">
             <div class="large-12 columns">
-              <form method="post">
+              <form id="event-search-form" method="post">
                 <div class="row">
                   <div class="large-12 columns">
                     <label for="eventSearch">Event Search</label>
                     <div class="input-group">
-                      <input type="text" name="eventSearch" class="input-group-field eventSearch" value="" placeholder="Search an event title, category, host, or location" autofocus />
+                      <input type="text" id="eventSearch" name="eventSearch" class="input-group-field eventSearch" value="" placeholder="Search an event title, category, host, or location" autofocus />
                       <div class="input-group-button">
                         <input type="submit" class="button eventSearchSubmit" value="Search">
                       </div>
@@ -146,17 +146,19 @@
           }
         });
 
-        // Search for events
-        var eventsRef = ref.child("events");
-        eventsRef.on("value",function(eventsSnapshot) {
-          var eventTotal = eventsSnapshot.numChildren();
-          var events = getEvents(eventsRef,eventsSnapshot);
-          var eventsHtml = getEventsHtml(events);
-          $("#event-list").html(eventsHtml);
+        var searchText = $("#eventSearch").val();
+        $(document).ready(function() {
+          var eventsRef = ref.child("events");
+          console.log(searchText);
+          displayEvents(eventsRef);
 
-          // Display appropriate event containers
-          $(".event-container").hide();
-          (eventTotal > 0) ? $("#event-list").show() : $("#no-events").show();
+
+          $("#event-search-form").on("submit",function(e) {
+            e.preventDefault();
+            searchText = $("#eventSearch").val();
+            console.log(searchText);
+            displayEvents(eventsRef);
+          });
         });
 
       </script>

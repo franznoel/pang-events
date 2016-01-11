@@ -72,7 +72,9 @@ function getGuestListHtml(guests) {
   if (guests) {
     var guestListHtml = "";
     for (var i=0;i<guests.length;i++) {
-      guestListHtml+= "<li>"+ guests[i] +"</li>";
+      if (guests[i]) {
+        guestListHtml+= "<li>"+ guests[i] +"</li>";
+      }
     }
   } else {
     var guestsListHtml = null;    
@@ -87,6 +89,24 @@ function getGuests() {
     guests.push(guest);
   });
   return guests
+}
+
+function displayEvents(eventsRef) {
+  var eventSearch = (searchText)
+    ? eventsRef.orderByChild("eventName").equalTo(searchText)
+    : eventsRef.orderByChild("eventName");
+  // displayEvents(eventSearch);
+  eventSearch.on("value",function(eventsSnapshot) {
+    // console.log(eventsSnapshot.val());
+    var eventTotal = eventsSnapshot.numChildren();
+    var events = getEvents(eventsRef,eventsSnapshot);
+    var eventsHtml = getEventsHtml(events);
+    $("#event-list").html(eventsHtml);
+
+    // Display appropriate event containers
+    $(".event-container").hide();
+    (eventTotal > 0) ? $("#event-list").show() : $("#no-events").show();
+  });
 }
 
 // Helpers
