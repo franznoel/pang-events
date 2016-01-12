@@ -16,7 +16,7 @@
         <div id="menu" class="top-bar">
           <div class="top-bar-left">
             <ul class="menu" data-dropdown-menu>
-              <li class="menu-text"><a href="/">PangEvents</a></li>
+              <li class="menu-text"><a href="index.html">PangEvents</a></li>
             </ul>
           </div>
         </div>
@@ -31,18 +31,18 @@
               </div>
               <form id="login-form" method="post">
                 <label for="loginEmail">Email Address
-                  <input type="text" id="loginEmail" class="form-control" name="loginEmail" value="" placeholder="Email Address" autocomplete="username"/>
+                  <input type="text" id="loginEmail" class="form-control" name="loginEmail" value="" placeholder="Email Address" autocomplete="username" />
                 </label>
                 <label for="loginPassword">Password
                   <input type="password" id="loginPassword" class="form-control" name="loginPassword" value="" placeholder="Password" autocomplete="password" />
                 </label>
                 <input type="submit" name="submit" class="button primary" value="Sign In" />
-                <a href="/reset-password.html" class="button secondary">Forgot Password</a>
+                <a href="reset-password.html" class="button secondary">Forgot Password</a>
                 <hr/>
                 <h5>Signup or Login with:</h5>
                 <div class="login-buttons row">
                   <div class="large-6 large-6 columns end">
-                    <a href="/sign-up.html" class="button button-login expanded primary">Sign Up</a>
+                    <a href="sign-up.html" class="button button-login expanded primary">Sign Up</a>
                   </div>
                   <!--
                   <div class="large-6 large-6 columns">
@@ -92,13 +92,15 @@
               var successMessage = '<div class="callout success">Authenticated successfully with payload!</div>';
               $("#login-error").html(successMessage);
               // Add save cookie here to check if logged in
-              var referrer = (document.referrer!=null) ? document.referrer : "/";
+              // var referrer = (document.referrer!=null) ? document.referrer : "index.html";
+              var referrer = localStorage.getItem("referrer");
               window.location.replace(referrer);
-              console.log(document.referrer);
+              // console.log(document.referrer);
             }
           });
         });
         
+
         $(".facebook.button-login").on("click",function(event) {
           event.preventDefault();
           ref.authWithOAuthPopup("facebook", authHandler);

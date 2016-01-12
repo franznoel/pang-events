@@ -27,7 +27,7 @@ body {
 /* #menu */
 #menu {
     /*padding:0.275rem;*/
-    background-image:url('/img/events.jpg');
+    background-image:url('img/events.jpg');
     background-size:cover;
     background-color: #8edb59;
     box-shadow:1px 1px 5px #666666;

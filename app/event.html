@@ -12,7 +12,7 @@
         <div id="menu" class="top-bar">
           <div class="top-bar-left">
             <ul class="menu" data-dropdown-menu>
-              <li class="menu-text"><a href="/">PangEvents</a></li>
+              <li class="menu-text"><a href="index.html">PangEvents</a></li>
             </ul>
           </div>
           <div class="top-bar-right">
@@ -20,14 +20,14 @@
             <li class="has-submenu">
               <a href="#" class="button" id="displayedUser"></a>
               <ul class="submenu menu vertical displayedUser-dropdown" data-submenu>
-                <li><a href="/user-profile.html">View Profile</a></li>
+                <li><a href="user-profile.html">View Profile</a></li>
                 <li><a href="javascript:logout()">Logout</a></li>
               </ul>
               </li>
             </ul>
             <ul id="loggedOut-menu" class="menu right-menu">
-              <li><a href="/sign-up.html" class="button sign-up">Sign Up</a></li>
-              <li><a href="/sign-in.html" class="button sign-in">Sign In</a></li>
+              <li><a href="sign-up.html" class="button sign-up">Sign Up</a></li>
+              <li><a href="sign-in.html" class="button sign-in">Sign In</a></li>
             </ul>
           </div>
         </div>
@@ -195,7 +195,7 @@
                 </div>
               </div>
               <input type="submit" name="submit" class="button" value="Save Event">
-              <a href="/" class="button secondary">Cancel</a>
+              <a href="index.html" class="button secondary">Cancel</a>
             </form>
           </div>
         </div>
@@ -208,7 +208,7 @@
     <script type="text/javascript" src="bower_components/jquery-validation/dist/additional-methods.min.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
     <script type="text/javascript" src="bower_components/foundation-sites/dist/foundation.min.js"></script>
-    <script type="text/javascript" src="/script.js"></script>
+    <script type="text/javascript" src="script.js"></script>
     <script type="text/javascript">
       // Set #eventType field
       $("#eventType").val(getParameterByName('eventType'));
@@ -245,6 +245,7 @@
           // Show #loggedOut-menu
           $(".right-menu").hide();
           $("#loggedOut-menu").show();
+          localStorage.setItem("referrer",window.location.href);
           window.location.replace("sign-in.html");
         }
       });

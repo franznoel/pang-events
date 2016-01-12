@@ -1,7 +1,8 @@
 // Authentication
 function logout() {
   ref.unauth();
-  var newUrl = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname;
+  // var newUrl = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
+  var newUrl = "index.html";
   window.location.replace(newUrl);
 }
 
@@ -51,11 +52,11 @@ function getEventsHtml(eventList) {
     var isEnd = (lastEvent==i+1) ? ' end' : '';
     var completeAddress = e.address + ', ' + e.city + ', ' + e.state + ' ' + e.zip;
     var eventStart = getDateFormat(e.start);
-    eventHtml+= '<a href="/event.html?key='+ e.key +'&action=edit" class="large-4 columns'+ isEnd +'">';
+    eventHtml+= '<a href="event.html?key='+ e.key +'&action=edit" class="large-4 columns'+ isEnd +'">';
     eventHtml+= '<div class="callout event">';
     eventHtml+= '<h3 class="eventTitle">'+ e.name +'</h3>';
     eventHtml+= '<span class="success label">'+ e.type +'</span>';
-    eventHtml+= ' <span class="badge" title="Attendees">4</span>';
+    eventHtml+= '<span class="badge" title="Attendees">4</span>';
     eventHtml+= '<div class="eventDescription">';
     eventHtml+= '<p>We are going to watch Star Wars tonight!</p>';
     eventHtml+= '</div>';
