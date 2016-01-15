@@ -9,6 +9,13 @@ Follow these steps to install pang-events in your local directory:
 - Run `npm install`
 - Run `npm install -g serve` to install NodeJs server.
 - Run `serve` inside the <Project Folder>/pang-events/app.
+- Open `<Project Folder/pang-events/app/index.html` with any browser.
+
+or 
+
+- Run `git clone https://github.com/fritzdenim/pang-events` to clone to your projects folder.
+- Open `<Project Folder/pang-events/app/index.html` with any browser.
+
 
 ## User Guide
 
@@ -35,4 +42,3 @@ Resetting your password includes an e-mail.
 In the users profile, users can also reset their password.
 
 Future plans include using Google and Facebook authentication.
-
