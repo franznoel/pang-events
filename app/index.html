@@ -104,15 +104,9 @@
         </div>
       </div><!-- #content -->
     </body>
-      <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-      <script type="text/javascript" src="bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
       <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
-      <script type="text/javascript" src="bower_components/foundation-sites/dist/foundation.min.js"></script>
-      <script type="text/javascript" src="script.js"></script>
+      <script type="text/javascript" src="scripts/app.js"></script>
       <script type="text/javascript">
-        // we would probably save a profile when we register new users on our site
-        // we could also read the profile to see if it's null
-        // here we will just simulate this with an isNewUser boolean
         var isNewUser = true;
 
         var ref = new Firebase("https://pang-events.firebaseio.com");
@@ -120,8 +114,6 @@
         // Authentication
         ref.onAuth(function(authData) {
           if (authData && isNewUser) {
-            // save the user's profile into the database so we can list users,
-            // use them in Security and Firebase Rules, and show profiles
             var userData = {
               provider: authData.provider,
               name: getName(authData)
