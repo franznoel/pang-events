@@ -16,6 +16,10 @@ or
 - Run `git clone https://github.com/fritzdenim/pang-events` to clone to your projects folder.
 - Open `<Project Folder/pang-events/app/index.html` with any browser.
 
+## Page
+
+You can also go to Firebase Pang-events Website: 
+[https://pang-events.firebaseapp.com](https://pang-events.firebaseapp.com)
 
 ## User Guide
 
