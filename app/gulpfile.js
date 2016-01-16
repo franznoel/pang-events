@@ -11,17 +11,17 @@ var PATH = {
     'bower_components/jquery-validation/dist/jquery.validate.js',
     'bower_components/jquery-validation/dist/additional-methods.js',
     'bower_components/foundation-sites/dist/foundation.js',
-    'script.js'
+    'scripts/script.js'
   ],
   css: [
     'bower_components/foundation-sites/dist/foundation.css',
     'bower_components/foundation-icon-fonts/foundation-icons.css',
-    'style.css'
+    'css/style.css'
   ]
 }
 
 gulp.task('clean-scripts',function() {
-  return gulp.src(["scripts/app.js","css/style.css"],
+  return gulp.src(["app.js","styles.css"],
     {read : false})
     .pipe(clean());
 });
@@ -30,17 +30,17 @@ gulp.task('clean-scripts',function() {
 gulp.task('styles', ['clean-scripts'], function () {
   gulp.src(PATH.css)
     .pipe(cssnano())
-    .pipe(gpconcat('style.css'))
-    .pipe(gulp.dest('css'));
+    .pipe(gpconcat('styles.css'))
+    .pipe(gulp.dest(''));
 });
 
 // concatenate and uglify all JavaScript of the page, except internal
 gulp.task('scripts', ['clean-scripts'], function () {
   gulp.src(PATH.scripts)
     .pipe(gpconcat('app.js'))
-    .pipe(gulp.dest('scripts'))
+    .pipe(gulp.dest(''))
     .pipe(uglify())
-    .pipe(gulp.dest('scripts'));
+    .pipe(gulp.dest(''));
 });
 
 // gulp.task('default',['styles','scripts']);

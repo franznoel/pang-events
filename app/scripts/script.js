@@ -36,13 +36,27 @@ function getEvents(eventsRef,eventsSnapshot) {
         state: e.eventAddressState,
         zip: e.eventAddressZip,
         start: e.eventStartTime,
-        end: e.eventEndTime
+        end: e.eventEndTime,
+        guests: e.guests,
       });
     });
   });
 
   return events;
 }
+
+function countGuests(guests) {
+  var c=0;
+  if (guests!=undefined) {
+    for (var i=0;i<guests.length;i++) {
+      if (guests[i]!=undefined) {
+        c++;
+      }
+    }
+  }
+  return c;
+}
+
 
 function getEventsHtml(eventList) {
   var eventHtml = "";
@@ -55,8 +69,8 @@ function getEventsHtml(eventList) {
     eventHtml+= '<a href="event.html?key='+ e.key +'&action=edit" class="large-4 columns'+ isEnd +'">';
     eventHtml+= '<div class="callout event">';
     eventHtml+= '<h3 class="eventTitle">'+ e.name +'</h3>';
-    eventHtml+= '<span class="success label">'+ e.type +'</span>';
-    eventHtml+= '<span class="badge" title="Attendees">4</span>';
+    eventHtml+= '<span class="success label">'+ e.type +'</span> ';
+    eventHtml+= ' <span class="badge" title="Attendees">'+countGuests(e.guests)+'</span>';
     eventHtml+= '<div class="eventDescription">';
     eventHtml+= '<p>We are going to watch Star Wars tonight!</p>';
     eventHtml+= '</div>';

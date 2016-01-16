@@ -6,7 +6,8 @@ Follow these steps to install pang-events in your local directory:
 - Install Nodejs in your computer
 - Run `git clone https://github.com/fritzdenim/pang-events` to clone to your projects folder.
 - Run `<Project Folder>/pang-events/app`
-- Run `npm install`
+- Run `npm install` to install node packages.
+- Run `bower install` to install bower packages.
 - Run `npm install -g serve` to install NodeJs server.
 - Run `serve` inside the <Project Folder>/pang-events/app.
 - Open `<Project Folder/pang-events/app/index.html` with any browser.
@@ -18,7 +19,7 @@ or
 
 ## Page
 
-You can also go to Firebase Pang-events Website: 
+You can also go to Firebase Pang-events Website:
 [https://pang-events.firebaseapp.com](https://pang-events.firebaseapp.com)
 
 ## User Guide

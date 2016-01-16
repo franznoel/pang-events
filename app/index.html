@@ -3,7 +3,7 @@
     <head>
         <title>pangEvents</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="styles.css" />
     </head>
     <body>
       <header>
@@ -104,7 +104,7 @@
       </div><!-- #content -->
     </body>
       <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
-      <script type="text/javascript" src="scripts/app.js"></script>
+      <script type="text/javascript" src="app.js"></script>
       <script type="text/javascript">
         var isNewUser = true;
 
@@ -140,14 +140,13 @@
         var searchText = $("#eventSearch").val();
         $(document).ready(function() {
           var eventsRef = ref.child("events");
-          console.log(searchText);
+          // console.log(searchText);
           displayEvents(eventsRef);
-
 
           $("#event-search-form").on("submit",function(e) {
             e.preventDefault();
             searchText = $("#eventSearch").val();
-            console.log(searchText);
+            // console.log(searchText);
             displayEvents(eventsRef);
           });
         });
