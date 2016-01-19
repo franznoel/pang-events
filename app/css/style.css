@@ -142,11 +142,6 @@ body {
     color: #8edb59;
     text-shadow:1px 1px 15px #516333;
 }
-.custom-font .hollow {
-    -webkit-text-stroke: 1px  #8edb59;
-    -webkit-text-fill-color:#ffffff;
-    color: #8edb59;
-}
 
 
 /* #event-category-list */
