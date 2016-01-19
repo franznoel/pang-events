@@ -79,7 +79,9 @@
             } else {
               var successMessage = '<div class="callout success">Authenticated successfully with payload!</div>';
               $("#login-error").html(successMessage);
-              var referrer = localStorage.getItem("referrer");
+              var httpReferrer = document.referrer;
+              var hasHttpReferrer = (httpReferrer!=="" || httpReferrer!==undefined || httpReferrer!==null );
+              var referrer = httpReferrer ? httpReferrer : localStorage.getItem("referrer");
               window.location.replace(referrer);
             }
           });
