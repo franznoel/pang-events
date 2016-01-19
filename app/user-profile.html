@@ -46,7 +46,7 @@
                 </div>
               </div>
             </div>
-            <form id="profile-update-form" method="post" action="">
+            <form id="profile-update-form" method="post">
               <div class="row">
                 <div class="small-12 large-6 columns">
                   <label for="firstname">First Name
@@ -59,7 +59,7 @@
                     <input type="email" id="emailAddress" name="emailAddress" value="" placeholder="Email Address" disabled />
                   </label>
                   <label for="birthdate">Birthdate
-                    <input type="date" id="birthdate" name="birthdate" value="" placeholder="Birthdate" />
+                    <input type="date" id="birthdate" name="birthdate" value="" />
                   </label>
                 </div>
                 <div class="small1-2 large-6 columns">
@@ -82,7 +82,7 @@
       </div>
 
       <!-- Reset Password Modal -->
-      <div id="change-password-modal" class="reveal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+      <div id="change-password-modal" class="reveal" data-reveal aria-label="Reset Password" aria-hidden="true" role="dialog">
         <h2>Reset Password</h2>
         <div id="resetErrorMessage"></div>
         <form id="change-password-form" method="post">
@@ -92,7 +92,7 @@
           <label for="changeNewPassword">New Password
             <input type="text" id="changeNewPassword" name="changeNewPassword" value="" placeholder="New Passsword" minlength="8" maxlength="20" required />
           </label>
-        <form>
+        </form>
         <div class="button-group">
           <input type="submit" id="confirm-reset-password" class="button alert" value="Reset" data-close>
           <a href="#cancel" class="button secondary" data-close>Cancel</a>
@@ -101,182 +101,181 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    </body>
+      <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+      <script type="text/javascript" src="app.js"></script>
+      <script type="text/javascript">
+        // Set #eventType field
+        $("#eventType").val(getParameterByName('eventType'));
 
-    <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
-    <script type="text/javascript" src="app.js"></script>
-    <script type="text/javascript">
-      // Set #eventType field
-      $("#eventType").val(getParameterByName('eventType'));
+        var ref = new Firebase("https://pang-events.firebaseio.com");
 
-      var ref = new Firebase("https://pang-events.firebaseio.com");
+        // Cancel default submission
+        $("#profile-update-form").submit(function(e) {
+          e.preventDefault();
+        });
 
-      // Cancel default submission
-      $("#profile-update-form").submit(function(e) {
-        e.preventDefault();
-      });
+        // Authentication
+        var isNewUser = true;
+        ref.onAuth(function(authData) {
+          if (authData && isNewUser) {
+            // save the user's profile into the database so we can list users,
+            // use them in Security and Firebase Rules, and show profiles
+            var userData = {
+              provider: authData.provider,
+              name: getName(authData)
+            };
 
-      // Authentication
-      var isNewUser = true;
-      ref.onAuth(function(authData) {
-        if (authData && isNewUser) {
-          // save the user's profile into the database so we can list users,
-          // use them in Security and Firebase Rules, and show profiles
-          var userData = {
-            provider: authData.provider,
-            name: getName(authData)
-          };
+            // Show #loggedIn-menu
+            $(".right-menu").hide();
+            $("#loggedIn-menu").show();
+            $("#displayedUser").html(userData.name);
 
-          // Show #loggedIn-menu
-          $(".right-menu").hide();
-          $("#loggedIn-menu").show();
-          $("#displayedUser").html(userData.name);
+            // On user server update or load
+            var userDataRef = ref.child("userData");
+            var userIdRef = userDataRef.child(authData.uid);
+            userIdRef.on("value",function(snapshot,prevChildKey) {
+              var userInfo = snapshot.val();
+              $("#firstname").val(userInfo.firstname);
+              $("#lastname").val(userInfo.lastname);
+              $("#emailAddress").val(userInfo.email);
+              $("#biography").html(userInfo.biography);
+              $("#birthdate").val(userInfo.birthdate);
+              // console.log(userInfo);
+              $("#displayedUser").html(userInfo.firstname);
+            });
 
-          // On user server update or load
-          var userDataRef = ref.child("userData");
-          var userIdRef = userDataRef.child(authData.uid);
-          userIdRef.on("value",function(snapshot,prevChildKey) {
-            var userInfo = snapshot.val();
-            $("#firstname").val(userInfo.firstname);
-            $("#lastname").val(userInfo.lastname);
-            $("#emailAddress").val(userInfo.email);
-            $("#biography").html(userInfo.biography);
-            $("#birthdate").val(userInfo.birthdate);
-            // console.log(userInfo);
-            $("#displayedUser").html(userInfo.firstname);
-          });
-
-          // #profile-update-form
-          $("#profile-update-form").validate({
-            showErrors: function(errorMap, errorList) {
-              // Show errors
-              var html = "";
-              var message = "";
-              if (errorList.length<=0) {
-                message = createErrorMessage("success","Seems like every field follows correct pattern. Submit the form.");
-                $("#errorMessage").html(html);
-               } else {
-                var errors = [];
-                for (var i=0;i<errorList.length;i++) {
-                  errors.push("<li>" + errorList[i].message + "</li>");
+            // #profile-update-form
+            $("#profile-update-form").validate({
+              showErrors: function(errorMap, errorList) {
+                // Show errors
+                var html = "";
+                var message = "";
+                if (errorList.length<=0) {
+                  message = createErrorMessage("success","Seems like every field follows correct pattern. Submit the form.");
+                  $("#errorMessage").html(html);
+                 } else {
+                  var errors = [];
+                  for (var i=0;i<errorList.length;i++) {
+                    errors.push("<li>" + errorList[i].message + "</li>");
+                  }
+                  html+= "<div class='error alert errorContainer callout'>";
+                  html+= "<h5><i class='fi-alert'></i> Oops!</h5>";
+                  html+= "<ul class='error-list'>";
+                  html+= errors.join("");
+                  html+= "<ul>";
+                  html+= "</div>";
+                  $("#errorMessage").html(html);
                 }
-                html+= "<div class='error alert errorContainer callout'>";
-                html+= "<h5><i class='fi-alert'></i> Oops!</h5>";
-                html+= "<ul class='error-list'>";
-                html+= errors.join("");
-                html+= "<ul>";
-                html+= "</div>";
-                $("#errorMessage").html(html);
-              }
-            },
-            rules: {
-              emailAddress: {
-                required: true,
-                email: true
               },
-            },
-            messages: {
-              emailAddress: {
-                required: "Email address is a required field.",
-                email: "Email address should be following proper format email@example.com"
+              rules: {
+                emailAddress: {
+                  required: true,
+                  email: true
+                },
               },
-            },
-            submitHandler: function() {
-              // Prepare user data to persist
-              var data = $("#profile-update-form").serializeArray();
-              var user = [];
-              for (var i=0;i<data.length;i++) {
-                var name = data[i].name;
-                var value = data[i].value;
-                switch(name) {
-                  case "firstname":
-                    user["firstname"] = value;
-                    break;
-                  case "lastname":
-                    user["lastname"] = value;
-                    break;
-                  case "biography":
-                    user["biography"] = value;
-                    break;
-                  case "birthdate":
-                    user["birthdate"] = value;
-                    break;
-                  default:
-                    user[name] = value;
-                    break;
+              messages: {
+                emailAddress: {
+                  required: "Email address is a required field.",
+                  email: "Email address should be following proper format email@example.com"
+                },
+              },
+              submitHandler: function() {
+                // Prepare user data to persist
+                var data = $("#profile-update-form").serializeArray();
+                var user = [];
+                for (var i=0;i<data.length;i++) {
+                  var name = data[i].name;
+                  var value = data[i].value;
+                  switch(name) {
+                    case "firstname":
+                      user.firstname = value;
+                      break;
+                    case "lastname":
+                      user.lastname = value;
+                      break;
+                    case "biography":
+                      user.biography = value;
+                      break;
+                    case "birthdate":
+                      user.birthdate = value;
+                      break;
+                    default:
+                      user[name] = value;
+                      break;
+                  }
                 }
-              }
 
-              // Update the userData with given userId
-              userIdRef.update({
-                "firstname": user["firstname"],
-                "lastname": user["lastname"],
-                "biography": user["biography"],
-                "birthdate": user["birthdate"]
-              },function(error) {
-                if (error) {
-                  // Need error message if there are any.
-                } else {
-                  var message = createErrorMessage("success","Successfully updated!");
-                  $("#errorMessage").html(message);
-                }
-              });
+                // Update the userData with given userId
+                userIdRef.update({
+                  "firstname": user.firstname,
+                  "lastname": user.lastname,
+                  "biography": user.biography,
+                  "birthdate": user.birthdate
+                },function(error) {
+                  if (error) {
+                    // Need error message if there are any.
+                  } else {
+                    var message = createErrorMessage("success","Successfully updated!");
+                    $("#errorMessage").html(message);
+                  }
+                });
+              }
+            });
+          } else {
+            // Show #loggedOut-menu
+            $(".right-menu").hide();
+            $("#loggedOut-menu").show();
+            window.location.replace("sign-in.html");
+          }
+        });
+
+        preparePasswordValidation();
+
+        // Change password
+        $("#change-password-form").validate({
+          rules: {
+            emailAddress: {
+              required: true,
+              email: true,
+              completeEmail: true,
+            },
+            changeOldPassword: {
+              required: true,
+              minlength: 8,
+              maxlength: 20,
+              passwordHasNumber: true,
+              passwordHasUppercase: true,
+              passwordHasSpecialCharacters: true,
+            }, 
+            changeNewPassword: {
+              required: true,
+              minlength: 8,
+              maxlength: 20,
+              passwordHasNumber: true,
+              passwordHasUppercase: true,
+              passwordHasSpecialCharacters: true,
             }
-          });
-        } else {
-          // Show #loggedOut-menu
-          $(".right-menu").hide();
-          $("#loggedOut-menu").show();
-          window.location.replace("sign-in.html");
-        }
-      });
-
-      preparePasswordValidation();
-
-      // Change password
-      $("#change-password-form").validate({
-        rules: {
-          emailAddress: {
-            required: true,
-            email: true,
-            completeEmail: true,
           },
-          changeOldPassword: {
-            required: true, 
-            minlength: 8,
-            maxlength: 20,
-            passwordHasNumber: true,
-            passwordHasUppercase: true,
-            passwordHasSpecialCharacters: true,
-          }, 
-          changeNewPassword: {
-            required: true, 
-            minlength: 8,
-            maxlength: 20,
-            passwordHasNumber: true,
-            passwordHasUppercase: true,
-            passwordHasSpecialCharacters: true,
-          }
-        },
-        messages: {
-          emailAddress: {
-            required: "Email address is a required field.",
-            email: "Email address should be following proper format email@example.com"
+          messages: {
+            emailAddress: {
+              required: "Email address is a required field.",
+              email: "Email address should be following proper format email@example.com"
+            },
+            changeOldPassword: {
+              required: "Please enter the old password.",
+            }, 
+            changeNewPassword: {
+              required: "Please enter the new password.",
+            }
           },
-          changeOldPassword: {
-            required: "Please enter the old password.",
-          }, 
-          changeNewPassword: {
-            required: "Please enter the new password.",
+          submitHandler: function() {
+            var email = $("#emailAddress").val(),
+              oldPassword = $("#changeOldPassword").val(),
+              newPassword = $("#changeNewPassword").val();
+            changePassword(ref,email,oldPassword,newPassword);
+            return false;
           }
-        },
-        submitHandler: function() {
-          var email = $("#emailAddress").val(),
-            oldPassword = $("#changeOldPassword").val(),
-            newPassword = $("#changeNewPassword").val();
-          changePassword(ref,email,oldPassword,newPassword);
-          return false;
-        }
-      });
-    </script>
+        });
+      </script>      
+    </body>
 </html>

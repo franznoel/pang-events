@@ -230,5 +230,11 @@ label[id*='-error'] {
     padding:0 30px 0 30px;
 }
 
+/* Others */
+.button-group.stacked-for-small .button:not(:last-child),
+.button-group.stacked .button:not(:last-child) {
+    border:0;
+}
+
 
 

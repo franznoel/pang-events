@@ -55,15 +55,6 @@
       <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
       <script type="text/javascript" src="app.js"></script>
       <script type="text/javascript">
-        // Firebase Authentication
-        function authHandler(error, authData) {
-          if (error) {
-            console.log("Login Failed!", error);
-          } else {
-            console.log("Authenticated successfully with payload:", authData);
-          }
-        }
-
         var ref = new Firebase("https://pang-events.firebaseio.com");
         var authData = ref.getAuth();
 
@@ -75,52 +66,52 @@
           var data = {
             email: email,
             password: password 
-          }
+          };
 
           ref.authWithPassword(data,function(error,authData) {
-            if (navigator.onLine==false) {
-              var errorMessage = '<div class="callout alert">You are not connected to the Internet.</div>'
+            var errorMessage = "";
+            if (navigator.onLine===false) {
+              errorMessage = '<div class="callout alert">You are not connected to the Internet.</div>';
               $("#login-error").html(errorMessage);
             } else if (error) {
-              var errorMessage = '<div class="callout alert">'+ error +'</div>'
+              errorMessage = '<div class="callout alert">'+ error +'</div>';
               $("#login-error").html(errorMessage);
             } else {
               var successMessage = '<div class="callout success">Authenticated successfully with payload!</div>';
               $("#login-error").html(successMessage);
-              // Add save cookie here to check if logged in
-              // var referrer = (document.referrer!=null) ? document.referrer : "index.html";
               var referrer = localStorage.getItem("referrer");
               window.location.replace(referrer);
-              // console.log(document.referrer);
             }
           });
         });
-        
 
-        $(".facebook.button-login").on("click",function(event) {
-          event.preventDefault();
-          ref.authWithOAuthPopup("facebook", authHandler);
-        });
-        $(".google.button-login").on("click",function(event) {
-          event.preventDefault();
+        // TODO: Program Facebook button login
+        // $(".facebook.button-login").on("click",function(event) {
+        //   event.preventDefault();
+        //   ref.authWithOAuthPopup("facebook", authHandler);
+        // });
 
-          var options = {
-            // remember:"sessionOnly",
-            scope:"openid",
-            redirect_uri: "http://localhost:3000/",
-            client_id: "1015279124716-ittf61nieb7tb1baiflnat5l04v1nv95.apps.googleusercontent.com",
-            response_type: "profile email",
-            // login_hint: "address"
-          };
+        // TODO: Program Google button login
+        // $(".google.button-login").on("click",function(event) {
+        //   event.preventDefault();
 
-          ref.authWithOAuthPopup("google", function(error,authData) {
-            if (error) {
-              console.log("Login Failed!", error);
-            } else {
-              console.log("Authenticated successfully with payload:", authData);
-            }
-          },options);
-        });
+        //   var options = {
+        //     // remember:"sessionOnly",
+        //     scope:"openid",
+        //     redirect_uri: "http://localhost:3000/",
+        //     client_id: "1015279124716-ittf61nieb7tb1baiflnat5l04v1nv95.apps.googleusercontent.com",
+        //     response_type: "profile email",
+        //     // login_hint: "address"
+        //   };
+
+        //   ref.authWithOAuthPopup("google", function(error,authData) {
+        //     if (error) {
+        //       console.log("Login Failed!", error);
+        //     } else {
+        //       console.log("Authenticated successfully with payload:", authData);
+        //     }
+        //   },options);
+        // });
       </script>
 
     </body>

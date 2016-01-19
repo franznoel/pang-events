@@ -1,3 +1,13 @@
+// Firebase Authentication
+function authHandler(error, authData) {
+  if (error) {
+    console.log("Login Failed!", error);
+  } else {
+    console.log("Authenticated successfully with payload:", authData);
+  }
+}
+
+
 // Authentication
 function logout() {
   ref.unauth();
@@ -47,9 +57,9 @@ function getEvents(eventsRef,eventsSnapshot) {
 
 function countGuests(guests) {
   var c=0;
-  if (guests!=undefined) {
+  if (guests!==undefined) {
     for (var i=0;i<guests.length;i++) {
-      if (guests[i]!=undefined) {
+      if (guests[i]!==undefined) {
         c++;
       }
     }
@@ -84,15 +94,16 @@ function getEventsHtml(eventList) {
 }
 
 function getGuestListHtml(guests) {
+  var guestListHtml = "";
   if (guests) {
-    var guestListHtml = "";
+    guestListHtml = "";
     for (var i=0;i<guests.length;i++) {
       if (guests[i]) {
         guestListHtml+= "<li>"+ guests[i] +"</li>";
       }
     }
   } else {
-    var guestsListHtml = null;    
+    guestsListHtml = "";
   }
   return guestListHtml;
 }
@@ -103,13 +114,11 @@ function getGuests() {
     var guest = $(this).text().trim();
     guests.push(guest);
   });
-  return guests
+  return guests;
 }
 
 function displayEvents(eventsRef) {
-  var eventSearch = (searchText)
-    ? eventsRef.orderByChild("eventName").equalTo(searchText)
-    : eventsRef.orderByChild("eventName");
+  var eventSearch = (searchText) ? eventsRef.orderByChild("eventName").equalTo(searchText) : eventsRef.orderByChild("eventName");
   // displayEvents(eventSearch);
   eventSearch.on("value",function(eventsSnapshot) {
     // console.log(eventsSnapshot.val());
@@ -120,9 +129,17 @@ function displayEvents(eventsRef) {
 
     // Display appropriate event containers
     $(".event-container").hide();
-    (eventTotal > 0) ? $("#event-list").show() : $("#no-events").show();
+
+    // Display Events if there is any
+    if (eventTotal > 0) {
+      $("#event-list").show();
+    } else {
+      $("#no-events").show();
+    }
   });
 }
+
+
 
 // Helpers
 function getParameterByName(name) {
@@ -158,7 +175,7 @@ function createErrorMessage(type,message,errorList,code) {
   html+= (type=="success") ? "success" : "alert";
   html+= " errorContainer callout'>";
   html+= (type=="success") ? "<h5><i class='fi-checkbox'></i> Cool!</h5>" : "<h5><i class='fi-alert'></i> Oops!</h5>";
-  html+= "<p>"+ message +"</p>"
+  html+= "<p>"+ message +"</p>";
   html+= "</div>";
   return html;
 }
@@ -199,13 +216,13 @@ function changePassword(ref,emailAddress,oldPassword,newPassword) {
     if (error) {
       switch (error.code) {
         case "INVALID_PASSWORD":
-          errorMessage = createErrorMessage("error","The specified user account password is incorrect.")
+          errorMessage = createErrorMessage("error","The specified user account password is incorrect.");
           break;
         case "INVALID_USER":
-          errorMessage = createErrorMessage("error","The specified user account does not exist.")
+          errorMessage = createErrorMessage("error","The specified user account does not exist.");
           break;
         default:
-          errorMessage = createErrorMessage("error","Error changing password:"+error)
+          errorMessage = createErrorMessage("error","Error changing password:"+error);
       }
     } else {
       errorMessage = createErrorMessage("success","User password changed successfully!");
