@@ -150,6 +150,8 @@
 
             // #profile-update-form
             $("#profile-update-form").validate({
+              onfocusout: false,
+              onkeyup: false,
               showErrors: function(errorMap, errorList) {
                 // Show errors
                 var html = "";

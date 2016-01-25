@@ -87,6 +87,7 @@
 
       // Prepare validations
       preparePasswordValidation();
+      createCompleteEmailValidation();
 
       // Cancel default submission
       $("#registration-form").submit(function(e) {
@@ -95,14 +96,14 @@
 
       // Validate Signup Form
       $("#registration-form").validate({
+        onfocusout: false,
+        onkeyup: false,
         showErrors: function(errorMap, errorList) {
+          console.log(errorList);
           // Show errors
           var html = "";
           if (errorList.length<=0) {
-            html+= "<div class='error success errorContainer callout'>";
-            html+= "<h5><i class='fi-checkbox'></i> Cool!</h5>";
-            html+= "<p>No errors found. Try submitting the form.</p>";
-            html+= "</div>";
+            var html = createErrorMessage("success","No errors found. Try submitting the form.");
            } else {
             var errors = [];
             for (var i=0;i<errorList.length;i++) {
@@ -152,9 +153,13 @@
         messages: {
             signupFirstname: {
               required: "First Name is a required field.",
+              minlength: "Please enter at least 2 characters in the first name field.",
+              maxlength: "Exceeded 254 characters in the first name field.",
             },
             signupLastname: {
               required: "Last Name is a required field.",
+              minlength: "Please enter at least 2 characters in the last name field.",
+              maxlength: "Exceeded 254 characters in the last name field.",
             },
             signupEmail: {
               required: "Email address is a required field.",
