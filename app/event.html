@@ -52,14 +52,14 @@
               <div class="row">
                 <div class="small-12 large-12 columns">
                   <label for="eventName">Event Name
-                    <input type="text" id="eventName" name="eventName" placeholder="Event Name" required />
+                    <input type="text" id="eventName" name="eventName" placeholder="Event Name" required autofocus/>
                   </label>
                 </div>
               </div>
               <div class="row">
                 <div class="small-12 large-5 columns">
                   <label for="eventType">Event Type
-                    <input type="text" list="eventTypeList" id="eventType" name="eventType" placeholder="Event Type" />
+                    <input type="text" list="eventTypeList" id="eventType" name="eventType" placeholder="Event Type" required />
                     <!--<input type="text" id="eventType" name="eventType" placeholder="Event Type" required />-->
                   </label>
                 </div>
@@ -185,7 +185,7 @@
                   <hr/>
                   <h5>Guests</h5>
                   <label for="eventGuest">Event Guest <span class="note">Make sure to Save Event to save guest list.</span>
-                    <input type="text" id="eventGuest" name="eventGuest" placeholder="Email Address" />
+                    <input type="email" id="eventGuest" name="eventGuest" placeholder="Email Address" />
                   </label>
                   <input type="button" id="add-guest" class="button primary tiny" value="Add Guest" />
                   <input type="button" id="send-invitation" class="button secondary tiny" value="Send Invitation" />
