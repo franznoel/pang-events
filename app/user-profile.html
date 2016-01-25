@@ -134,14 +134,18 @@
             var userDataRef = ref.child("userData");
             var userIdRef = userDataRef.child(authData.uid);
             userIdRef.on("value",function(snapshot,prevChildKey) {
-              var userInfo = snapshot.val();
-              $("#firstname").val(userInfo.firstname);
-              $("#lastname").val(userInfo.lastname);
-              $("#emailAddress").val(userInfo.email);
-              $("#biography").html(userInfo.biography);
-              $("#birthdate").val(userInfo.birthdate);
-              // console.log(userInfo);
-              $("#displayedUser").html(userInfo.firstname);
+              try {
+                var userInfo = snapshot.val();
+                $("#firstname").val(userInfo.firstname);
+                $("#lastname").val(userInfo.lastname);
+                $("#emailAddress").val(userInfo.email);
+                $("#biography").html(userInfo.biography);
+                $("#birthdate").val(userInfo.birthdate);
+                // console.log(userInfo);
+                $("#displayedUser").html(userInfo.firstname);
+              } catch (e) {
+                $("#firstname").val(userData.name)
+              }
             });
 
             // #profile-update-form

@@ -121,7 +121,11 @@
             var userDataRef = ref.child("userData").child(authData.uid);
             userDataRef.on("value",function(snapshot,prevChildKey) {
               var userInfo = snapshot.val();
-              $("#displayedUser").html(userInfo.firstname);
+              try {
+                $("#displayedUser").html(userInfo.firstname);
+              } catch (e) {
+                $("#displayUser").html(userData.name)
+              }
             });
 
             // Show #loggedIn-menu

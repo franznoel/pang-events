@@ -4,7 +4,6 @@ Author: Franz Noel Tanglao
 Version: 1.0.2
 */
 
-
 /* 
 List of colors: 
 grand-wormwood: #516333
@@ -18,11 +17,9 @@ Others:
 border-radius: 3px;
 */
 
-
 body {
     background-color:#efefef;
 }
-
 
 /* #menu */
 #menu {
