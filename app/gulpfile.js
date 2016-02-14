@@ -51,7 +51,7 @@ gulp.task('fonts', function() {
       .pipe(gulp.dest(''));
 });
 
-// concatenate and uglify all CSS of the page, except internal
+// concatenate and uglify all CSS of the page, except internal CSS
 gulp.task('styles', ['clean-scripts'], function () {
   gulp.src(PATH.css)
     .pipe(cssnano())

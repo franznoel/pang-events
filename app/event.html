@@ -183,11 +183,8 @@
                     <textarea id="eventDescription" name="eventDescription" rows="4" placeholder="Write something to your guests even just a short description." required></textarea>
                   </label>
                   <hr/>
-                  <h5>Guests</h5>
-                  <label for="eventGuest">Event Guest <span class="note">Make sure to Save Event to save guest list.</span>
-                    <input type="email" id="eventGuest" name="eventGuest" placeholder="Email Address" />
-                  </label>
-                  <input type="button" id="add-guest" class="button primary tiny" value="Add Guest" />
+                  <h5>Guests <span class="note">Make sure to Save Event to save guest list.</span></h5>
+                  <input type="button" id="add-guest-modal-button" class="button primary tiny" value="Add Guest" data-open="add-guest-form" />
                   <input type="button" id="send-invitation" class="button secondary tiny" value="Send Invitation" />
                   <ul id="guest-list">
                   </ul>
@@ -196,6 +193,19 @@
               <input type="submit" name="submit" class="button" value="Save Event">
               <a href="index.html" class="button secondary">Cancel</a>
             </form>
+
+            <div id="add-guest-form" class="reveal" data-reveal>
+              <h3>Add a Guest</h3>
+              <form method="post">
+                <label for="eventGuest">Event Guest
+                  <input type="email" id="eventGuest" name="eventGuest" placeholder="Email Address" minlength="2" maxlength="254" required />
+                </label>
+                <input type="submit" id="add-guest" name="submit" class="button primary small" value="Add Guest" data-close/>
+              </form>
+              <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           </div>
         </div>
         <!-- #event-category -->
@@ -228,7 +238,7 @@
               try {
                 $("#displayedUser").html(userInfo.firstname);
               } catch (e) {
-                $("#displayUser").html(userData.name)
+                $("#displayUser").html(userData.name);
               }
             });
 
@@ -246,7 +256,8 @@
           }
         });
 
-        $(document).ready(function() {
+        prepareAddressValidation();
+
           // Change page title
           var pageTitle = action + " Event";
           $(".page-title").html(pageTitle);
@@ -287,6 +298,14 @@
             $("#eventGuest").val(""); // Clear eventGuest field.
           });
 
+          $(document).on("click","#add-guest-form",function(e) {
+            e.preventDefault();
+          });
+
+          $("#add-guest-form").validate({});
+
+
+
           // Submit form
           $("#event-add-form").validate({
             onfocusout: false,
@@ -312,15 +331,20 @@
               },
               eventAddress: {
                 required: true,
+                minlength: 6,
+                maxlength: 254,
               },
               eventAddressCity: {
                 required: true,
+                minlength: 2,
+                maxlength: 254,
               },
               eventAddressState: {
                 required: true,
               },
               eventAddressZip: {
                 required: true,
+                minlength: 5,
               }
             }, 
             messages: {
@@ -344,17 +368,22 @@
               },
               eventAddress: {
                 required: "Address is a required field.",
+                minlength: "Address requires at least 6 characters."
               },
               eventAddressCity: {
                 required: "City is a required field.",
+                minlength: "City requires at least 2 letters."
               },
               eventAddressState: {
                 required: "State is a required field.",
               },
               eventAddressZip: {
                 required: "Zip Code is a required field.",
+                minlength: "Zip Code should have minimum of 5 numbers."
               }
             },
+            onfocusout: false,
+            onkeyup: false,
             submitHandler: function() {
               var data = {
                 eventName: $("#eventName").val(),
@@ -367,13 +396,14 @@
                 eventAddressCity: $("#eventAddressCity").val(),
                 eventAddressState: $("#eventAddressState").val(),
                 eventAddressZip: $("#eventAddressZip").val(),
-                guests: getGuests(),
+                // guests: getGuests(),
               };
 
               // console.log(getGuests());
 
               // Create or update event
               if (action=="create") {
+                console.log(eventsRef);
                 eventsRef.push().set(data,function(error) {
                   var message = "";
                   if (error) {
@@ -389,7 +419,7 @@
                 var eventRef = eventsRef.child(key);
                 eventsRef.on("value",function(snapshot) {
                   var e = snapshot.val();
-                  console.log(e.guests);
+                  // console.log(e.guests);
                 });
                 eventsRef.update(data,function(error) {
                   var message = "";
@@ -415,7 +445,6 @@
               }
             }
           });
-        });
       </script>
 
     </body>

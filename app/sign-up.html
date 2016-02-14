@@ -63,7 +63,7 @@
                 </label>
               </div>
               <div class="small-12 large-6 columns">
-                <div id="errorMessage">
+                <div id="errorMessage" class="errorMessage">
                   <div class='error callout primary errorContainer'>
                     <h5><i class="fi-info"></i> Welcome!</h5>
                     <p>Fill out this form to sign up, and we'll be creating events in no time. </p>
@@ -99,25 +99,17 @@
         onfocusout: false,
         onkeyup: false,
         showErrors: function(errorMap, errorList) {
-          console.log(errorList);
           // Show errors
           var html = "";
           if (errorList.length<=0) {
-            var html = createErrorMessage("success","No errors found. Try submitting the form.");
-           } else {
-            var errors = [];
-            for (var i=0;i<errorList.length;i++) {
-              errors.push("<li>" + errorList[i].message + "</li>");
-            }
-            html+= "<div class='error alert errorContainer callout'>";
-            html+= "<h5><i class='fi-alert'></i> Oops!</h5>";
-            html+= "<ul class='error-list'>";
-            html+= errors.join("");
-            html+= "<ul>";
-            html+= "</div>";
+            html = createErrorMessage("success","No errors found. Try submitting the form.");
+          } else {
+            html = createErrorMessage("error","There are "+ errorList.length + " error(s).");
           }
           $("#errorMessage").html(html);
         },
+        onfocusout: false,
+        onkeyup: false,
         rules: {
             signupFirstname: {
               required: true,
@@ -166,7 +158,7 @@
               email: "Email address should be following proper format email@example.com"
             },
             signupPassword: {
-              required: "Password is a required field..",
+              required: "Password is a required field.",
               equalTo: "Password does not match.",
               minlength: "Passwords should have at least 8 characters",
               maxlength: "Passwords should have less than 20 characters"
