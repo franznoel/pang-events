@@ -7,7 +7,6 @@ function authHandler(error, authData) {
   }
 }
 
-
 // Authentication
 function logout() {
   ref.unauth();
@@ -41,6 +40,7 @@ function getEvents(eventsRef,eventsSnapshot) {
         name: e.eventName,
         type: e.eventType,
         host: e.eventHost,
+        description: e.eventDescription,
         address: e.eventAddress,
         city: e.eventAddressCity,
         state: e.eventAddressState,
@@ -82,7 +82,7 @@ function getEventsHtml(eventList) {
     eventHtml+= '<span class="success label">'+ e.type +'</span> ';
     eventHtml+= ' <span class="badge" title="Attendees">'+countGuests(e.guests)+'</span>';
     eventHtml+= '<div class="eventDescription">';
-    eventHtml+= '<p>We are going to watch Star Wars tonight!</p>';
+    eventHtml+= '<p>'+ e.description +'</p>';
     eventHtml+= '</div>';
     eventHtml+= '<span class="label alert eventHost">'+ e.host +'</span>';
     eventHtml+= '<div class="eventLocation">' + completeAddress + '</div>';
@@ -167,6 +167,27 @@ function preparePasswordValidation() {
 function createCompleteEmailValidation() {
   var completeEmailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   createValidation("completeEmail",completeEmailRegex,"Passwords should have special characters such as exclamation points (!), question marks (?), hashtags (#), periods(.), commas(,), or slash(/).");
+}
+
+function prepareAddressValidation() {
+  createAddressValidation();
+  createCityValidation();
+  createZipValidation();
+}
+
+function createAddressValidation() {
+  var addressRegex = /^[a-zA-Z0-9-\/] ?([a-zA-Z0-9-\/]|[a-zA-Z0-9-\/] )*[a-zA-Z0-9-\/]$/;
+  createValidation("address",addressRegex,"Address should follow correct US format.");
+}
+
+function createCityValidation() {
+  var cityRegex = /^[a-zA-z] ?([a-zA-z]|[a-zA-z] )*[a-zA-z]$/;
+  createValidation("city",cityRegex,"City should follow correct format.");
+}
+
+function createZipValidation() {
+  var zipValidation = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+  createValidation("zip",zipValidation,"Zip code should follow correct format.");
 }
 
 function createErrorMessage(type,message,errorList,code) {
