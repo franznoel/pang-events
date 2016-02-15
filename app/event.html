@@ -407,36 +407,43 @@
               // console.log(getGuests());
 
               // Create or update event
-              if (action=="create") {
-                console.log(eventsRef);
-                eventsRef.push().set(data,function(error) {
-                  var message = "";
-                  if (error) {
-                    message = createErrorMessage("error","Errors found! " + error);
-                  } else {
-                    message = createErrorMessage("success","Successfully saved events.");
-                  }
-                  $("#errorMessage").html(message);
-                  $("#errorMessage").show();
-                });
-              } else if (action=="edit") {
-                var key = getParameterByName("key");
-                var eventRef = eventsRef.child(key);
-                eventsRef.on("value",function(snapshot) {
-                  var e = snapshot.val();
-                  // console.log(e.guests);
-                });
-                eventsRef.update(data,function(error) {
-                  var message = "";
-                  if (error) {
-                    message = createErrorMessage("error","Errors found! " + error);
-                  } else {
-                    message = createErrorMessage("success","Successfully saved events.");
-                  }
-                  $("#errorMessage").html(message);
-                  $("#errorMessage").show();
-                });
+              var message = "";
+              if (data.eventStartTime > data.eventEndTime) {
+                // console.log("The event end time must be after the start time.");
+                message = createErrorMessage('error','The event end time must be after the start time.');
+                $("#errorMessage").html(message);
+              } else {
+                if (action=="create") {
+                  console.log(eventsRef);
+                  eventsRef.push().set(data,function(error) {
+                    if (error) {
+                      message = createErrorMessage("error","Errors found! " + error);
+                    } else {
+                      message = createErrorMessage("success","Successfully saved events.");
+                    }
+                    $("#errorMessage").html(message);
+                    $("#errorMessage").show();
+                  });
+                } else if (action=="edit") {
+                  var key = getParameterByName("key");
+                  var eventRef = eventsRef.child(key);
+                  eventsRef.on("value",function(snapshot) {
+                    var e = snapshot.val();
+                    // console.log(e.guests);
+                  });
+                  eventsRef.update(data,function(error) {
+                    var message = "";
+                    if (error) {
+                      message = createErrorMessage("error","Errors found! " + error);
+                    } else {
+                      message = createErrorMessage("success","Successfully saved events.");
+                    }
+                    $("#errorMessage").html(message);
+                    $("#errorMessage").show();
+                  });
+                }                
               }
+
               return false;
             },
             invalidHandler: function(event, validator) {
