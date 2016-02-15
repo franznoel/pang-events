@@ -56,7 +56,7 @@
                     <input type="text" id="lastname" name="lastname" value="" placeholder="Last Name" minlength="2" maxlength="100" required />
                   </label>
                   <label for="emailAddress">Email Address <span class="note">(Currently, you can not change your email address once you registered.)</span>
-                    <input type="email" id="emailAddress" name="emailAddress" value="" placeholder="Email Address" disabled />
+                    <input type="email" id="emailAddress" name="emailAddress" value="" placeholder="Email Address" />
                   </label>
                   <label for="birthdate">Birthdate
                     <input type="date" id="birthdate" name="birthdate" value="" />
@@ -134,6 +134,7 @@
             var userDataRef = ref.child("userData");
             var userIdRef = userDataRef.child(authData.uid);
             userIdRef.on("value",function(snapshot,prevChildKey) {
+              console.log(snapshot.val());
               try {
                 var userInfo = snapshot.val();
                 $("#firstname").val(userInfo.firstname);
@@ -205,6 +206,9 @@
                     case "birthdate":
                       user.birthdate = value;
                       break;
+                    case "email":
+                      user.email = value;
+                      break;
                     default:
                       user[name] = value;
                       break;
@@ -216,6 +220,7 @@
                   "firstname": user.firstname,
                   "lastname": user.lastname,
                   "biography": user.biography,
+                  "email": user.email,
                   "birthdate": user.birthdate
                 },function(error) {
                   if (error) {
