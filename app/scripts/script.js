@@ -1,3 +1,9 @@
+var ref = new Firebase("https://pang-events.firebaseio.com");
+var eventsRef = ref.child('events');
+var authData = ref.getAuth();
+var usersRef = ref.child('users');
+var userDataRef = ref.child('userData');
+
 // Firebase Authentication
 function authHandler(error, authData) {
   if (error) {
@@ -8,7 +14,7 @@ function authHandler(error, authData) {
 }
 
 // Authentication
-function logout() {
+function logout(ref) {
   ref.unauth();
   // var newUrl = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
   var newUrl = "index.html";

@@ -218,10 +218,7 @@
         // Set #eventType field
         $("#eventType").val(getParameterByName('eventType'));
 
-        var ref = new Firebase("https://pang-events.firebaseio.com");
-        var eventsRef = ref.child('events');
         var action = getParameterByName("action");
-
         var isNewUser = true;
 
         ref.onAuth(function(authData) {

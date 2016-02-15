@@ -106,9 +106,6 @@
       <script type="text/javascript" src="app.js"></script>
       <script type="text/javascript">
         var isNewUser = true;
-
-        var ref = new Firebase("https://pang-events.firebaseio.com");
-
         // Authentication
         ref.onAuth(function(authData) {
           if (authData && isNewUser) {

@@ -107,8 +107,6 @@
         // Set #eventType field
         $("#eventType").val(getParameterByName('eventType'));
 
-        var ref = new Firebase("https://pang-events.firebaseio.com");
-
         // Cancel default submission
         $("#profile-update-form").submit(function(e) {
           e.preventDefault();

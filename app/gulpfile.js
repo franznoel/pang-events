@@ -4,7 +4,9 @@ var gulp = require('gulp'),
   cssnano = require('gulp-cssnano'),
   jshint = require('gulp-jshint'),
   lintspaces = require("gulp-lintspaces"),
+  browserSync = require('browser-sync').create(),
   uglify = require('gulp-uglify');
+
 
 var PATH = {
   scripts: [
@@ -68,7 +70,16 @@ gulp.task('scripts', ['clean-scripts'], function () {
     .pipe(gulp.dest(''));
 });
 
+gulp.task('serve',function() {
+  browserSync.init({
+    server: {
+      baseDir: "./"
+    }
+  });
+});
 
 // gulp.task('default',['styles','scripts']);
-gulp.task('default',['lint','fonts','styles','scripts']);
+gulp.task('default',['lint','fonts','styles','scripts','serve']);
+
+
 
