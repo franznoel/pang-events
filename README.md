@@ -2,25 +2,38 @@
 Pang-events is a simple event manager where you can place events and invite people. 
 
 ## Installation
-Follow these steps to install pang-events in your local directory:
+
+#### Follow these steps to install pang-events in your local directory:
 - Install Nodejs in your computer
 - Run `git clone https://github.com/fritzdenim/pang-events` to clone to your projects folder.
 - Run `<Project Folder>/pang-events/app`
 - Run `npm install` to install node packages.
 - Run `bower install` to install bower packages.
-- Run `npm install -g serve` to install NodeJs server.
-- Run `serve` inside the <Project Folder>/pang-events/app.
-- Open `<Project Folder/pang-events/app/index.html` with any browser.
+- Open `<Project Folder>/pang-events/app/index.html` with any browser.
 
-or 
-
+#### If you already have Node.js in your computer:
 - Run `git clone https://github.com/fritzdenim/pang-events` to clone to your projects folder.
+- Run `npm install`
+- Run `bower install`
+- Run `gulp`
+
+#### If you just want to open the files locally:
+- Run `git clone https://github.com/fritzdenim/pang-events` to clone to your projects folder.
+- Run `npm install`
+- Run `bower install`
 - Open `<Project Folder/pang-events/app/index.html` with any browser.
 
-## Page
+#### If you don't want to install anything in your local, and just want to QA on the web:
+- Go to [https://pang-events.firebaseapp.com](https://pang-events.firebaseapp.com)
 
-You can also go to Firebase Pang-events Website:
-[https://pang-events.firebaseapp.com](https://pang-events.firebaseapp.com)
+## Page List
+- index.html - Events search and list page
+- event.html - Create and Edit events form
+- user-profile.html - Create and update user profile.
+- sign-in.html - Sign in page.
+- sign-up.html - Sign up page.
+- reset-password.html - Reset password page.
+
 
 ## User Guide
 
