@@ -8,7 +8,6 @@ var gulp = require('gulp'),
   sequence = require('run-sequence'),
   sourcemaps = require('gulp-sourcemaps'),
   browserSync = require('browser-sync').create(),
-  reload = browserSync.reload,
   uglify = require('gulp-uglify');
 
 var PATHS = {
@@ -39,7 +38,7 @@ var PATHS = {
 
 // Reload the page
 gulp.task('reload',function(cb) {
-  reload();
+  browserSync.reload();
   cb();
 });
 

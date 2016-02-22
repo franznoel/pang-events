@@ -19,7 +19,7 @@
               <a href="#" class="button" id="displayedUser"></a>
               <ul class="submenu menu vertical displayedUser-dropdown" data-submenu>
                 <li><a href="user-profile.html">View Profile</a></li>
-                <li><a href="javascript:logout()">Logout</a></li>
+                <li><a href="javascript:logout(ref)">Logout</a></li>
               </ul>
               </li>
             </ul>
@@ -440,11 +440,8 @@
             },
             invalidHandler: function(event, validator) {
               var errors = validator.numberOfInvalids();
-              if (errors) {
-                var message = errors == 1 ? createErrorMessage("error","You missed 1 field. It has been highlighted") : createErrorMessage("error","You missed " + errors + " fields. They have been highlighted.");
-                $("#errorMessage").html(message);
-                $("#errorMessage").show();
-              } else {
+              var html = "";
+              if (!errors) {
                 $("#errorMessage").hide();
               }
             }

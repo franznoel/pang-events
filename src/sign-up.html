@@ -94,16 +94,23 @@
       $("#registration-form").validate({
         onfocusout: false,
         onkeyup: false,
-        showErrors: function(errorMap, errorList) {
-          // Show errors
+        invalidHandler: function(event, validator) {
+          var errors = validator.numberOfInvalids();
           var html = "";
-          if (errorList.length<=0) {
-            html = createErrorMessage("success","No errors found. Try submitting the form.");
-          } else {
-            html = createErrorMessage("error","There are "+ errorList.length + " error(s).");
+          if (!errors) {
+            $("#errorMessage").hide();
           }
-          $("#errorMessage").html(html);
         },
+        // invalid: function(errorMap, errorList) {
+        //   // Show errors
+        //   var html = "";
+        //   if (errorList.length<=0) {
+        //     html = createErrorMessage("success","No errors found. Try submitting the form.");
+        //   } else {
+        //     html = createErrorMessage("error","There are "+ errorList.length + " error(s).");
+        //   }
+        //   $("#errorMessage").html(html);
+        // },
         rules: {
             signupFirstname: {
               required: true,
@@ -224,7 +231,7 @@
               });
               html+="<div class='error callout success errorContainer'>";
               html+="<h5><i class='fi-alert'></i> Success!</h5>";
-              html+="<p>Successfully created user account!</p>";
+              html+="<p>Successfully created user account!<br/>Go to <a href='index.html'>events page</a>.</p>";
               html+="</div>";
               $("#errorMessage").html(html);
             }

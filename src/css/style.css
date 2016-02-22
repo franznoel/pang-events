@@ -17,6 +17,7 @@ Others:
 border-radius: 3px;
 */
 
+@charset "UTF-8";
 body {
     background-color:#efefef;
 }
@@ -74,11 +75,13 @@ body {
 #menu ul .submenu {
     background-color:#ffffff;
 }
+/*
 #menu #loggedIn-menu .displayedUser-dropdown {
     position:absolute;
     left:-122px;
     top:38px;
 }
+*/
 
 
 
