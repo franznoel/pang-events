@@ -1,6 +1,6 @@
 {
   "firebase": "pang-events",
-  "public": "app",
+  "public": "dist",
   "ignore": [
     "firebase.json",
     "**/.*",
