@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <title>pangEvents</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div id="menu" class="top-bar">
+        <div class="top-bar-left">
+          <ul class="menu" data-dropdown-menu>
+            <li class="menu-text"><a href="index.html">PangEvents</a></li>
+          </ul>
+        </div>
+        <div class="top-bar-right">
+          <ul class="menu">
+            <li class="credentials"><a href="sign-in.html" class="button sign-in">Sign In</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <div id="content" class="row">
+      <div class="large-12 columns">
+        <div id="sign-up" class="large-12 columns">
+          <div class="row">
+            <div class="small-12 large-12 columns">
+              <h2>Sign Up</h2>
+              <hr/>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 large-6 columns">
+            </div>
+          </div>
+          <form id="registration-form" method="post">
+            <div class="row">
+              <div class="small-12 large-12 columns">
+                <p>* Required Fields</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 large-6 columns">
+                <label for="signupFirstname">First Name *
+                  <input type="text" id="signupFirstname" name="signupFirstname" value="" placeholder="First Name" minlength="2" maxlength="100" required autofocus />
+                </label>
+                <label for="signupLastname">Last Name *
+                  <input type="text" id="signupLastname" name="signupLastname" value="" placeholder="Last Name" minlength="2" maxlength="100" required />
+                </label>
+                <label for="signupEmail">Email Address *
+                  <input type="email" id="signupEmail" name="signupEmail" value="" placeholder="Email Address" minlength="3" maxlength="254" required />
+                </label>
+                <label for="signupPassword">Password *
+                  <input type="password" id="signupPassword" name="signupPassword" value="" placeholder="Password" minlength="2" maxlength="100" required />
+                </label>
+                <label for="signupConfirmPassword">Confirm Password *
+                  <input type="password" id="signupConfirmPassword" name="signupConfirmPassword" value="" placeholder="Confirm Password" />
+                </label>
+                <label for="signupBio">Biography
+                  <textarea id="signupBio" name="signupBio" rows="4" placeholder="About me"></textarea>
+                </label>
+              </div>
+              <div class="small-12 large-6 columns">
+                <div id="errorMessage" class="errorMessage">
+                  <div class='error callout primary errorContainer'>
+                    <h5><i class="fi-info"></i> Welcome!</h5>
+                    <p>Fill out this form to sign up, and we'll be creating events in no time. </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input type="submit" name="submit" class="button" value="Sign Up">
+            <a href="index.html" class="button secondary">Cancel</a>
+          </form>
+        </div>
+      </div>
+      <!-- #event-category -->
+    </div>
+    <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript">
+      // Prepare validations
+      preparePasswordValidation();
+      createCompleteEmailValidation();
+
+      // Cancel default submission
+      $("#registration-form").submit(function(e) {
+        e.preventDefault();
+      });
+
+      // Validate Signup Form
+      $("#registration-form").validate({
+        onfocusout: false,
+        onkeyup: false,
+        showErrors: function(errorMap, errorList) {
+          // Show errors
+          var html = "";
+          if (errorList.length<=0) {
+            html = createErrorMessage("success","No errors found. Try submitting the form.");
+          } else {
+            html = createErrorMessage("error","There are "+ errorList.length + " error(s).");
+          }
+          $("#errorMessage").html(html);
+        },
+        rules: {
+            signupFirstname: {
+              required: true,
+              minlength: 2,
+              maxlength: 100,
+            },
+            signupLastname: {
+              required: true,
+              minlength: 2,
+              maxlength: 100,
+            },
+            signupEmail: {
+              required: true,
+              email: true,
+              minlength: 3,
+              maxlength: 254,
+              completeEmail: true,
+            },
+            signupPassword: {
+              required: true,
+              equalTo: "#signupConfirmPassword",
+              minlength: 8,
+              maxlength: 20,
+              passwordHasNumber: true,
+              passwordHasUppercase: true,
+              passwordHasSpecialCharacters: true,
+            },
+            signupConfirmPassword: {
+              required: true,
+              equalTo: "#signupPassword"
+            },
+        },
+        messages: {
+            signupFirstname: {
+              required: "First Name is a required field.",
+              minlength: "Please enter at least 2 characters in the first name field.",
+              maxlength: "Exceeded 254 characters in the first name field.",
+            },
+            signupLastname: {
+              required: "Last Name is a required field.",
+              minlength: "Please enter at least 2 characters in the last name field.",
+              maxlength: "Exceeded 254 characters in the last name field.",
+            },
+            signupEmail: {
+              required: "Email address is a required field.",
+              email: "Email address should be following proper format email@example.com"
+            },
+            signupPassword: {
+              required: "Password is a required field.",
+              equalTo: "Password does not match.",
+              minlength: "Passwords should have at least 8 characters",
+              maxlength: "Passwords should have less than 20 characters"
+            },
+            signupConfirmPassword: {
+              required: "Confirm password is a required field.",
+            },
+        },
+        submitHandler: function() {
+          // Prepare user data to persist
+          var data = $("#registration-form").serializeArray();
+          var user = [];
+          for (var i=0;i<data.length;i++) {
+            var name = data[i].name;
+            var value = data[i].value;
+            switch(name) {
+              case "signupFirstname":
+                user.firstname = value;
+                break;
+              case "signupLastname":
+                user.lastname = value;
+                break;
+              case "signupEmail":
+                user.email = value;
+                break;
+              case "signupPassword":
+                user.password = value;
+                break;
+              case "signupBio":
+                user.biography = value;
+                break;
+              default:
+                user[name] = value;
+                break;
+            }
+          }
+
+          // Create user after sucessfully validating
+          ref.createUser(user,function(error,userData) {
+            var html = "";
+            if (error) {
+              switch (error.code) {
+                case "EMAIL_TAKEN":
+                  html+="<div class='error callout alert errorContainer'>";
+                  html+="<h5><i class='fi-alert'></i> Oops!</h5>";
+                  html+="<p>The new user account cannot be created because the email is already in use. Please use another email address.</p>";
+                  html+="<p>If you forgot your email address, <a href='/reseet-password.html'>reset your password</a>.</p>";
+                  html+="</div>";
+                  $("#errorMessage").html(html);
+                  break;
+                case "INVALID_EMAIL":
+                  html+="<div class='error callout alert errorContainer'>";
+                  html+="<h5><i class='fi-alert'></i> Oops!</h5>";
+                  html+="<p>The specified email is not a valid email.</p>";
+                  html+="</div>";
+                  $("#errorMessage").html(html);
+                  break;
+                default:
+                  console.log("Error creating user:", error);
+              }
+            } else { // Success
+              userDataRef.set({
+                [userData.uid] : {
+                  "firstname": user.firstname,
+                  "lastname": user.lastname,
+                  "email": user.email,
+                  "biography": user.biography
+                }
+              });
+              html+="<div class='error callout success errorContainer'>";
+              html+="<h5><i class='fi-alert'></i> Success!</h5>";
+              html+="<p>Successfully created user account with uid: " + userData.uid + "</p>";
+              html+="</div>";
+              $("#errorMessage").html(html);
+            }
+          });
+          return false;
+        }
+      });
+    </script>
+  </body>
+</html>

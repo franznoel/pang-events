@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>pangEvents</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+    </head>
+    <body>
+      <header>
+        <div id="menu" class="top-bar">
+          <div class="top-bar-left">
+            <ul class="menu" data-dropdown-menu>
+              <li class="menu-text"><a href="index.html">PangEvents</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div id="content" class="row">
+        <div class="row">
+          <div class="small-12 large-offset-4 large-4 columns">
+            <div id="login-panel" class="callout">
+              <h1>Login</h1>
+              <div id="login-error">
+              </div>
+              <form id="login-form" method="post">
+                <label for="loginEmail">Email Address
+                  <input type="email" id="loginEmail" class="form-control" name="loginEmail" value="" placeholder="Email Address" autocomplete="username" required autofocus/>
+                </label>
+                <label for="loginPassword">Password
+                  <input type="password" id="loginPassword" class="form-control" name="loginPassword" value="" placeholder="Password" autocomplete="password" required />
+                </label>
+                <input type="submit" name="submit" class="button primary" value="Sign In" />
+                <a href="reset-password.html" class="button secondary">Forgot Password</a>
+                <hr/>
+                <h5>Signup or Login with:</h5>
+                <div class="login-buttons row">
+                  <div class="large-6 large-6 columns end">
+                    <a href="sign-up.html" class="button button-login expanded primary">Sign Up</a>
+                  </div>
+                  <!--
+                  <div class="large-6 large-6 columns">
+                    <a href="#" class="button facebook button-login expanded"><i class="fi-social-facebook"></i> Facebook</a>
+                    <a class="button google button-login alert expanded" href="https://accounts.google.com/o/oauth2/v2/auth?client_id=1015279124716-ittf61nieb7tb1baiflnat5l04v1nv95.apps.googleusercontent.com&redirect_uri=http://localhost:3000/&response_type=code&scope=openid%20email&login_hint=address
+"><i class="fi-social-google-plus"></i> Google</a>
+                  </div>
+                -->
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+      <script type="text/javascript" src="app.js"></script>
+      <script type="text/javascript">
+
+        // Get Authentication values
+        $("#login-form").on("submit",function(event) {
+          event.preventDefault();
+          var email = $('#loginEmail').val();
+          var password = $('#loginPassword').val();
+          var data = {
+            email: email,
+            password: password 
+          };
+
+          ref.authWithPassword(data,function(error,authData) {
+            var errorMessage = "";
+            if (navigator.onLine===false) {
+              errorMessage = '<div class="callout alert">You are not connected to the Internet.</div>';
+              $("#login-error").html(errorMessage);
+            } else if (error) {
+              errorMessage = '<div class="callout alert">'+ error +'</div>';
+              $("#login-error").html(errorMessage);
+            } else {
+              var successMessage = '<div class="callout success">Authenticated successfully with payload!</div>';
+              $("#login-error").html(successMessage);
+              var httpReferrer = document.referrer;
+              var hasHttpReferrer = (httpReferrer!=="" || httpReferrer!==undefined || httpReferrer!==null );
+              var referrer = httpReferrer ? httpReferrer : localStorage.getItem("referrer");
+              window.location.replace(referrer);
+            }
+          });
+        });
+
+        // TODO: Program Facebook button login
+        // $(".facebook.button-login").on("click",function(event) {
+        //   event.preventDefault();
+        //   ref.authWithOAuthPopup("facebook", authHandler);
+        // });
+
+        // TODO: Program Google button login
+        // $(".google.button-login").on("click",function(event) {
+        //   event.preventDefault();
+
+        //   var options = {
+        //     // remember:"sessionOnly",
+        //     scope:"openid",
+        //     redirect_uri: "http://localhost:3000/",
+        //     client_id: "1015279124716-ittf61nieb7tb1baiflnat5l04v1nv95.apps.googleusercontent.com",
+        //     response_type: "profile email",
+        //     // login_hint: "address"
+        //   };
+
+        //   ref.authWithOAuthPopup("google", function(error,authData) {
+        //     if (error) {
+        //       console.log("Login Failed!", error);
+        //     } else {
+        //       console.log("Authenticated successfully with payload:", authData);
+        //     }
+        //   },options);
+        // });
+      </script>
+
+    </body>
+</html>

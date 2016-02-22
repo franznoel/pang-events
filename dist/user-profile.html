@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>pangEvents</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+    </head>
+    <body>
+      <header>
+        <div id="menu" class="top-bar">
+          <div class="top-bar-left">
+            <ul class="menu" data-dropdown-menu>
+              <li class="menu-text"><a href="index.html">pangEvents</a></li>
+            </ul>
+          </div>
+          <div class="top-bar-right">
+            <ul id="loggedIn-menu" class="dropdown menu right-menu" data-dropdown-menu>
+            <li class="has-submenu">
+              <a href="#" class="button" id="displayedUser"></a>
+              <ul class="submenu menu vertical displayedUser-dropdown" data-submenu>
+                <li><a href="user-profile.html">View Profile</a></li>
+                <li><a href="javascript:logout()">Logout</a></li>
+              </ul>
+              </li>
+            </ul>
+            <ul id="loggedOut-menu" class="menu right-menu">
+              <li><a href="sign-up.html" class="button sign-up">Sign Up</a></li>
+              <li><a href="sign-in.html" class="button sign-in">Sign In</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div id="content" class="row">
+        <div class="large-12 columns">
+          <div id="event-add" class="large-12 columns">
+            <div class="row">
+              <div class="small-12 large-12 columns">
+                <h2>User Profile</h2>
+                <hr/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 large-12 columns">
+                <div id="errorMessage">
+                </div>
+              </div>
+            </div>
+            <form id="profile-update-form" method="post">
+              <div class="row">
+                <div class="small-12 large-6 columns">
+                  <label for="firstname">First Name
+                    <input type="text" id="firstname" name="firstname" value="" placeholder="First Name" minlength="2" maxlength="100" required autofocus />
+                  </label>
+                  <label for="lastname">Last Name
+                    <input type="text" id="lastname" name="lastname" value="" placeholder="Last Name" minlength="2" maxlength="100" required />
+                  </label>
+                  <label for="emailAddress">Email Address
+                    <input type="email" id="emailAddress" name="emailAddress" value="" placeholder="Email Address" />
+                  </label>
+                  <label for="birthdate">Birthdate
+                    <input type="date" id="birthdate" name="birthdate" value="" />
+                  </label>
+                </div>
+                <div class="small1-2 large-6 columns">
+                  <label for="biography">Biography
+                    <textarea id="biography" rows="4" name="biography" placeholder="Biography"></textarea>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="small-12 large-5 columns">
+                </div>
+              </div>
+              <input type="submit" name="submit" class="button" value="Save Profile">
+              <a href="#reset-password" id="change-password-button" data-open="change-password-modal" class="button alert">Change Password</a>
+              <a href="index.html" class="button secondary">Cancel</a>
+            </form>
+          </div>
+        </div>
+        <!-- #event-category -->
+      </div>
+
+      <!-- Reset Password Modal -->
+      <div id="change-password-modal" class="reveal" data-reveal aria-label="Reset Password" aria-hidden="true" role="dialog">
+        <h2>Reset Password</h2>
+        <div id="resetErrorMessage"></div>
+        <form id="change-password-form" method="post">
+          <label for="changeOldPassword">Old Password
+            <input type="text" id="changeOldPassword" name="changeOldPassword" value="" placeholder="Old Password" minlength="8" maxlength="20" required />
+          </label>
+          <label for="changeNewPassword">New Password
+            <input type="text" id="changeNewPassword" name="changeNewPassword" value="" placeholder="New Passsword" minlength="8" maxlength="20" required />
+          </label>
+        </form>
+        <div class="button-group">
+          <input type="submit" id="confirm-reset-password" class="button alert" value="Reset" data-close>
+          <a href="#cancel" class="button secondary" data-close>Cancel</a>
+        </div>
+        <button class="close-button" data-close aria-label="Close reveal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+      <script type="text/javascript" src="app.js"></script>
+      <script type="text/javascript">
+        // Set #eventType field
+        $("#eventType").val(getParameterByName('eventType'));
+
+        // Cancel default submission
+        $("#profile-update-form").submit(function(e) {
+          e.preventDefault();
+        });
+
+        // Authentication
+        var isNewUser = true;
+        ref.onAuth(function(authData) {
+          if (authData && isNewUser) {
+            // save the user's profile into the database so we can list users,
+            // use them in Security and Firebase Rules, and show profiles
+            var userData = {
+              provider: authData.provider,
+              name: getName(authData)
+            };
+
+            // Show #loggedIn-menu
+            $(".right-menu").hide();
+            $("#loggedIn-menu").show();
+            $("#displayedUser").html(userData.name);
+
+            // On user server update or load
+            var userDataRef = ref.child("userData");
+            var userIdRef = userDataRef.child(authData.uid);
+            userIdRef.on("value",function(snapshot,prevChildKey) {
+              try {
+                var userInfo = snapshot.val();
+                $("#firstname").val(userInfo.firstname);
+                $("#lastname").val(userInfo.lastname);
+                $("#emailAddress").val(userInfo.email);
+                $("#biography").html(userInfo.biography);
+                $("#birthdate").val(userInfo.birthdate);
+                // console.log(userInfo);
+                $("#displayedUser").html(userInfo.firstname);
+              } catch (e) {
+                $("#firstname").val(userData.name);
+              }
+            });
+
+            // #profile-update-form
+            $("#profile-update-form").validate({
+              onfocusout: false,
+              onkeyup: false,
+              showErrors: function(errorMap, errorList) {
+                // Show errors
+                var html = "";
+                var message = "";
+                if (errorList.length<=0) {
+                  message = createErrorMessage("success","Seems like every field follows correct pattern. Submit the form.");
+                  $("#errorMessage").html(html);
+                 } else {
+                  var errors = [];
+                  for (var i=0;i<errorList.length;i++) {
+                    errors.push("<li>" + errorList[i].message + "</li>");
+                  }
+                  html+= "<div class='error alert errorContainer callout'>";
+                  html+= "<h5><i class='fi-alert'></i> Oops!</h5>";
+                  html+= "<ul class='error-list'>";
+                  html+= errors.join("");
+                  html+= "<ul>";
+                  html+= "</div>";
+                  $("#errorMessage").html(html);
+                }
+              },
+              rules: {
+                emailAddress: {
+                  required: true,
+                  email: true
+                },
+              },
+              messages: {
+                emailAddress: {
+                  required: "Email address is a required field.",
+                  email: "Email address should be following proper format email@example.com"
+                },
+              },
+              submitHandler: function() {
+                // Prepare user data to persist
+                var data = $("#profile-update-form").serializeArray();
+                var user = [];
+                for (var i=0;i<data.length;i++) {
+                  var name = data[i].name;
+                  var value = data[i].value;
+                  switch(name) {
+                    case "firstname":
+                      user.firstname = value;
+                      break;
+                    case "lastname":
+                      user.lastname = value;
+                      break;
+                    case "biography":
+                      user.biography = value;
+                      break;
+                    case "birthdate":
+                      user.birthdate = value;
+                      break;
+                    case "email":
+                      user.email = value;
+                      break;
+                    default:
+                      user[name] = value;
+                      break;
+                  }
+                }
+
+                // Update the userData with given userId
+                userIdRef.update({
+                  "firstname": user.firstname,
+                  "lastname": user.lastname,
+                  "biography": user.biography,
+                  "email": user.email,
+                  "birthdate": user.birthdate
+                },function(error) {
+                  if (error) {
+                    // Need error message if there are any.
+                  } else {
+                    var message = createErrorMessage("success","Successfully updated!");
+                    $("#errorMessage").html(message);
+                  }
+                });
+              }
+            });
+          } else {
+            // Show #loggedOut-menu
+            $(".right-menu").hide();
+            $("#loggedOut-menu").show();
+            window.location.replace("sign-in.html");
+          }
+        });
+
+        preparePasswordValidation();
+
+        // Change password
+        $("#change-password-form").validate({
+          rules: {
+            emailAddress: {
+              required: true,
+              email: true,
+              completeEmail: true,
+            },
+            changeOldPassword: {
+              required: true,
+              minlength: 8,
+              maxlength: 20,
+              passwordHasNumber: true,
+              passwordHasUppercase: true,
+              passwordHasSpecialCharacters: true,
+            }, 
+            changeNewPassword: {
+              required: true,
+              minlength: 8,
+              maxlength: 20,
+              passwordHasNumber: true,
+              passwordHasUppercase: true,
+              passwordHasSpecialCharacters: true,
+            }
+          },
+          messages: {
+            emailAddress: {
+              required: "Email address is a required field.",
+              email: "Email address should be following proper format email@example.com"
+            },
+            changeOldPassword: {
+              required: "Please enter the old password.",
+            }, 
+            changeNewPassword: {
+              required: "Please enter the new password.",
+            }
+          },
+          submitHandler: function() {
+            var email = $("#emailAddress").val(),
+              oldPassword = $("#changeOldPassword").val(),
+              newPassword = $("#changeNewPassword").val();
+            changePassword(ref,email,oldPassword,newPassword);
+            return false;
+          }
+        });
+      </script>      
+    </body>
+</html>
