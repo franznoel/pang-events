@@ -33,6 +33,9 @@ var PATHS = {
   ],
   images: [
     'src/img/*.{jpg,png,gif,svg}'
+  ],
+  favicon: [
+    'sc/img/favicon.ico'
   ]
 };
 
@@ -84,9 +87,15 @@ gulp.task('images', function() {
     .pipe(gulp.dest('dist/img'));
 });
 
+gulp.task('favicon', function() {
+  gulp.src(PATHS.images)
+    .pipe(flatten())
+    .pipe(gulp.dest('dist'));
+});
+
 // build before serving dist folder
 gulp.task('build',function(done) {
-  sequence('clean',['pages','styles','scripts','fonts','images'],done);
+  sequence('clean',['pages','styles','scripts','fonts','images','favicon'],done);
 });
 
 // serve all files inside dist folder.

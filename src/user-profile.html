@@ -4,6 +4,7 @@
         <title>pangEvents</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="styles.css" />
+        <link rel="icon" type="image/png" href="favicon.png">
     </head>
     <body>
       <header>
@@ -150,27 +151,27 @@
             $("#profile-update-form").validate({
               onfocusout: false,
               onkeyup: false,
-              // showErrors: function(errorMap, errorList) {
-              //   // Show errors
-              //   var html = "";
-              //   var message = "";
-              //   if (errorList.length<=0) {
-              //     message = createErrorMessage("success","Seems like every field follows correct pattern. Submit the form.");
-              //     $("#errorMessage").html(html);
-              //    } else {
-              //     var errors = [];
-              //     for (var i=0;i<errorList.length;i++) {
-              //       errors.push("<li>" + errorList[i].message + "</li>");
-              //     }
-              //     html+= "<div class='error alert errorContainer callout'>";
-              //     html+= "<h5><i class='fi-alert'></i> Oops!</h5>";
-              //     html+= "<ul class='error-list'>";
-              //     html+= errors.join("");
-              //     html+= "<ul>";
-              //     html+= "</div>";
-              //     $("#errorMessage").html(html);
-              //   }
-              // },
+              showErrors: function(errorMap, errorList) {
+                // Show errors
+                var html = "";
+                var message = "";
+                if (errorList.length<=0) {
+                  message = createErrorMessage("success","Seems like every field follows correct pattern. Submit the form.");
+                  $("#errorMessage").html(html);
+                 } else {
+                  var errors = [];
+                  for (var i=0;i<errorList.length;i++) {
+                    errors.push("<li>" + errorList[i].message + "</li>");
+                  }
+                  html+= "<div class='error alert errorContainer callout'>";
+                  html+= "<h5><i class='fi-alert'></i> Oops!</h5>";
+                  html+= "<ul class='error-list'>";
+                  html+= errors.join("");
+                  html+= "<ul>";
+                  html+= "</div>";
+                  $("#errorMessage").html(html);
+                }
+              },
               rules: {
                 firstname: {
                   required: true,
