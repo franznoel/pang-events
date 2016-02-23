@@ -56,8 +56,8 @@
                   <label for="lastname">Last Name
                     <input type="text" id="lastname" name="lastname" value="" placeholder="Last Name" minlength="2" maxlength="100" required />
                   </label>
-                  <label for="emailAddress">Email Address
-                    <input type="email" id="emailAddress" name="emailAddress" value="" placeholder="Email Address" />
+                  <label for="emailAddress">Email Address <span class="note">You can not update your email address at this time.</span>
+                    <input type="email" id="emailAddress" name="emailAddress" value="" placeholder="Email Address" disabled />
                   </label>
                   <label for="birthdate">Birthdate
                     <input type="date" id="birthdate" name="birthdate" value="" />
@@ -151,6 +151,34 @@
             $("#profile-update-form").validate({
               onfocusout: false,
               onkeyup: false,
+              rules: {
+                firstname: {
+                  required: true,
+                  minlength: 3,
+                },
+                lastname: {
+                  required: true,
+                  minlength: 3,
+                },
+                // emailAddress: {
+                //   required: true,
+                //   email: true
+                // },
+              },
+              messages: {
+                firstname: {
+                  required: "First name is a required field.",
+                  minlength: "First name needs more than 2 letters.",
+                },
+                lastname: {
+                  required: "Last name is a required field.",
+                  minlength: "Last name needs more than 2 letters.",
+                },
+                // emailAddress: {
+                //   required: "Email address is a required field.",
+                //   email: "Email address should be following proper format email@example.com"
+                // },
+              },
               showErrors: function(errorMap, errorList) {
                 // Show errors
                 var html = "";
@@ -172,34 +200,6 @@
                   $("#errorMessage").html(html);
                 }
               },
-              rules: {
-                firstname: {
-                  required: true,
-                  minlength: 2,
-                },
-                lastname: {
-                  required: true,
-                  minlength: 2,
-                },
-                emailAddress: {
-                  required: true,
-                  email: true
-                },
-              },
-              messages: {
-                firstname: {
-                  required: "First name is a required field.",
-                  minlength: "First name needs more than 2 letters.",
-                },
-                lastname: {
-                  required: "Last name is a required field.",
-                  minlength: "Last name needs more than 2 letters.",
-                },
-                emailAddress: {
-                  required: "Email address is a required field.",
-                  email: "Email address should be following proper format email@example.com"
-                },
-              },
               submitHandler: function() {
                 // Prepare user data to persist
                 var data = $("#profile-update-form").serializeArray();
@@ -220,9 +220,9 @@
                     case "birthdate":
                       user.birthdate = value;
                       break;
-                    case "email":
-                      user.email = value;
-                      break;
+                    // case "email":
+                    //   user.email = value;
+                    //   break;
                     default:
                       user[name] = value;
                       break;
@@ -234,7 +234,7 @@
                   "firstname": user.firstname,
                   "lastname": user.lastname,
                   "biography": user.biography,
-                  "email": user.email,
+                  // "email": user.email,
                   "birthdate": user.birthdate
                 },function(error) {
                   if (error) {
