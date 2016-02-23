@@ -18,10 +18,10 @@ border-radius: 3px;
 */
 
 @charset "UTF-8";
+
 body {
     background-color:#efefef;
 }
-
 /* #menu */
 #menu {
     /*padding:0.275rem;*/
@@ -63,17 +63,21 @@ body {
 #menu #displayedUser {
     text-transform:capitalize;
 }
-#menu .dropdown.menu .is-dropdown-submenu-parent.opens-left .submenu {
-    background-color:#ffffff;
-    border:1px solid #21cbe8;
-    display:block;
-    right:0;
-}
 #menu .dropdown.menu .submenu > li > a:hover {
     background-color:#e5f3fc;
 }
 #menu ul .submenu {
     background-color:#ffffff;
+}
+@media screen and (min-width: 40em) {
+    #menu ul .submenu {
+        left:-88px;
+    }
+}
+@media screen and (min-width: 39em) {
+    #menu ul .submenu {
+        right:0;
+    }
 }
 /*
 #menu #loggedIn-menu .displayedUser-dropdown {
