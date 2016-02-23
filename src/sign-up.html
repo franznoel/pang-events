@@ -93,8 +93,6 @@
 
       // Validate Signup Form
       $("#registration-form").validate({
-        onfocusout: false,
-        onkeyup: false,
         invalidHandler: function(event, validator) {
           var errors = validator.numberOfInvalids();
           var html = "";
