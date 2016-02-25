@@ -172,7 +172,7 @@ function preparePasswordValidation() {
 
 function createCompleteEmailValidation() {
   var completeEmailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  createValidation("completeEmail",completeEmailRegex,"Passwords should have special characters such as exclamation points (!), question marks (?), hashtags (#), periods(.), commas(,), or slash(/).");
+  createValidation("completeEmail",completeEmailRegex,"Email should have top level domains with at least 2 letters (.us, .com, .net, etc. ).");
 }
 
 function prepareAddressValidation() {

@@ -130,12 +130,12 @@
             },
             signupPassword: {
               required: true,
-              equalTo: "#signupConfirmPassword",
               minlength: 8,
               maxlength: 20,
               passwordHasNumber: true,
               passwordHasUppercase: true,
               passwordHasSpecialCharacters: true,
+              equalTo: "#signupConfirmPassword",
             },
             signupConfirmPassword: {
               required: true,
