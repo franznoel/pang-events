@@ -227,7 +227,7 @@ body {
 label[id*='-error'] {
     color:#cc0000;
     font-style:italic;
-    font-size:0.475rem;
+    font-size:0.775rem;
     position:relative;
     bottom:1rem;
 }
